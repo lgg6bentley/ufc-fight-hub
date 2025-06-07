@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UFC Fight Hub</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>UFC Fight Hub</h1>
+        <nav>
+        <a href="index.html">Home</a>
+        <a href="upcoming.html">Next Fight Card</a>
+       <a href="http://127.0.0.1:5000/prediction">Go to AI Predictions</a>
+        <a href="analysis.html">Fight Analysis</a>
+        <a href="fighters.html">Fighter Database</a>
+        </nav>
+    
+
+        <div class="search-container">
+            <input type="text" id="fighter-search" placeholder="Search for fighters...">
+            <button id="search-button">Search</button>
+        </div>
+    </header>
+
+    <main>
+        <section id="fighters-list">
+            <!-- Fighter cards will be dynamically added here -->
+        </section>
+    </main>
+
+    <script src="scripts.js"></script>
+</body>
+</html>

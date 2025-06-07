@@ -1,0 +1,192 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: linear-gradient(to right, #ff0000, #ff8000);
+    color: white;
+    animation: fadeIn 1.5s ease-in;
+}
+
+header {
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 20px;
+}
+
+.container {
+    margin: auto;
+    padding: 20px;
+    max-width: 500px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+}
+
+.fighter-input {
+    margin-bottom: 15px;
+}
+
+input {
+    padding: 10px;
+    width: 80%;
+    border: 2px solid white;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+button {
+    padding: 12px;
+    font-size: 16px;
+    background: #ff8000;
+    color: black;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+button:hover {
+    transform: scale(1.1);
+    background: #ff4000;
+}
+
+.result-box {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.win-rate {
+    font-size: 20px;
+    font-weight: bold;
+    color: yellow;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+
+body {
+    animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+nav a, .fight-analysis-link, #predict-btn {
+    transition: all 0.3s ease-in-out;
+}
+
+nav a:hover, .fight-analysis-link:hover, #predict-btn:hover {
+    transform: scale(1.1);  /* Slight zoom-in effect */
+    background-color: #f4a261; /* Highlight effect */
+    color: black;
+}
+
+#prediction-result {
+    animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+    }
+    to {
+        box-shadow: 0 0 20px rgba(255, 165, 0, 0.8);
+    }
+}
+
+.loading-spinner {
+    border: 6px solid rgba(255, 255, 255, 0.3);
+    border-top: 6px solid #ff8000;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.matchup-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    text-align: center;
+    animation: fadeIn 1.2s ease-in-out;
+}
+
+.fighter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.fighter img {
+    width: 120px;  /* Adjust image size */
+    height: auto;  /* Maintain aspect ratio */
+    border-radius: 0; /* Removes circular effect */
+    object-fit: contain; /* Ensures full image fits */
+    transition: transform 0.3s ease-in-out; /* Smooth scaling effect */
+}
+
+.fighter img:hover {
+    transform: scale(1.1); /* Slight zoom effect on hover */
+    cursor: pointer; /* Changes the cursor for interactivity */
+}
+
+.fighter img {
+    border: 2px solid transparent; /* Default border */
+    transition: border 0.3s ease-in-out; /* Smooth transition */
+}
+
+.fighter img:hover {
+    border: 2px solid gold; /* Gold border on hover */
+}
+
+.fighter-stats {
+    opacity: 0;
+    transform: translateY(20px); /* Slight movement */
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.show-stats {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.vs-text {
+    font-size: 24px;
+    font-weight: bold;
+    color: yellow;
+}
+
+.win-rate {
+    font-size: 18px;
+    font-weight: bold;
+    color: lightgreen;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}

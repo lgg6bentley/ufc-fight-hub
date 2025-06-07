@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upcoming UFC Fights</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Upcoming UFC Fights</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="upcoming.html">Next Fight Card</a>
+        <a href="http://127.0.0.1:5000/prediction">Go to AI Predictions</a>
+    </nav>
+    <div class="fighters-images" style="display: flex; align-items: center; justify-content: space-between; margin: 20px 0;">
+        <img src="images/dvalishvili.jpg" alt="Dvalishvili" style="height:100px; border-radius:50%;">
+        <span style="flex: 1;"></span>
+        <img src="images/omalley.jpg" alt="O'Malley" style="height:100px; border-radius:50%;">
+    </div>
+    <div class="octagon-meeting-link" style="text-align: center; margin-bottom: 20px;">
+        <a href="https://www.youtube.com/watch?v=qAbUbjL8IHU" target="_blank">
+            Rewatch the full fight between Merab Dvalishvili and Sean O'Malley  
+        </a>
+    </div>
+    <div class="event-info">
+        <h2>UFC 316: Dvalishvili vs. O'Malley 2</h2>
+        <p>June 7, 2025 &bull; Main card (ESPN+ PPV at 10 p.m. ET)</p>
+    </div>
+    </nav>
+
+        <div class="search-container">
+            <input type="text" id="fighter-search" placeholder="Search for fighters...">
+            <button id="search-button">Search</button>
+        </div>
+    </header>
+<div class="fight-card">
+    <div class="fight-images" style="display: flex; align-items: center; justify-content: space-between;">
+        <a href="fighter.html?name=Dvalishvili">
+            
+        <span style="flex: 1;"></span>
+        
+    </div>
+    <h2><a href="analysis.html?fight=Dvalishvili_vs_O'Malley">Fight Analysis</a></h2>
+</div>
+    <main>
+        <section id="upcoming-fights">
+            <h2>Main Card</h2>
+            <!-- Upcoming fight data will be added dynamically here -->
+            <script>
+document.addEventListener('DOMContentLoaded', () => {
+    fetch('http://localhost:3000/upcoming-fights')
+        .then(response => response.json())
+        .then(fights => {
+            const upcomingList = document.getElementById('upcoming-fights');
+            if (upcomingList) {
+                upcomingList.innerHTML = '';
+
+                fights.forEach(fight => {
+                    const div = document.createElement('div');
+                    div.className = 'fight-card';
+                    // Create dynamic links for each fighter
+                    const fighter1Link = `fighter.html?name=${encodeURIComponent(fight.fighter1)}`;
+                    const fighter2Link = `fighter.html?name=${encodeURIComponent(fight.fighter2)}`;
+                    // Dynamically generate image paths based on fighter names (assumes images are named as lowercase, no spaces, .jpg)
+                    const fighter1Img = `images/${fight.fighter1.toLowerCase().replace(/\s/g, '')}.jpg`;
+                    const fighter2Img = `images/${fight.fighter2.toLowerCase().replace(/\s/g, '')}.jpg`;
+
+                    div.innerHTML = `
+                        <div class="fight-images" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                            <img src="${fighter1Img}" alt="${fight.fighter1}" style="height:80px; border-radius:50%;">
+                            <span style="flex: 1;"></span>
+                            <img src="${fighter2Img}" alt="${fight.fighter2}" style="height:80px; border-radius:50%;">
+                        </div>
+                        <h2>${fight.fighter1} vs. ${fight.fighter2}</h2>
+                        <p><strong>Event:</strong> ${fight.event_name}</p>
+                        <p><strong>Date:</strong> ${fight.date}</p>
+                        <p><strong>Location:</strong> ${fight.location}</p>
+                        <p><strong>Weight Class:</strong> ${fight.weight_class}</p>
+                    `;
+                    upcomingList.appendChild(div);
+                });
+            }
+        })
+        .catch(error => console.error('Error fetching upcoming fights:', error));
+});
+            </script>
+            <div id="fight-list"></div>
+            <script>
+document.addEventListener('DOMContentLoaded', () => {
+    fetch('http://localhost:3000/upcoming-fights')
+        .then(response => response.json())
+        .then(fights => {
+            const upcomingList = document.getElementById('upcoming-fights');
+            if (upcomingList) {
+                upcomingList.innerHTML = '';
+
+                fights.forEach(fight => {
+                    const div = document.createElement('div');
+                    div.className = 'fight-card';
+
+                    div.innerHTML = `
+                        <h2>${fight.fighter1} vs. ${fight.fighter2}</h2>
+                        <p><strong>Event:</strong> ${fight.event_name}</p>
+                        <p><strong>Date:</strong> ${fight.date}</p>
+                        <p><strong>Location:</strong> ${fight.location}</p>
+                        <p><strong>Weight Class:</strong> ${fight.weight_class}</p>
+                    `;
+                    upcomingList.appendChild(div);
+                });
+            }
+        })
+        .catch(error => console.error('Error fetching upcoming fights:', error));
+});
+</script>
+        </section>
+    </main>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
