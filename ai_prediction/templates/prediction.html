@@ -1,94 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UFC AI Fight Prediction</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UFC AI Fight Prediction</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <header>
-        <h1>
-            <img src="https://imgproxy.attic.sh/insecure/f:png/plain/https://attic.sh/fl04pms2jkswavwx7p8cuws26bm2" 
-                alt="MMA Glove" style="height: 1.5em; vertical-align: middle; margin-right: 0.3em;">
-            UFC AI Fight Prediction
-        </h1>
-    </header>
-    
-    <main class="container">
-        <div class="fighter-input">
-            <label for="fighter1">Fighter 1:</label>
-            <input type="text" id="fighter1" placeholder="Enter fighter name">
-        </div>
+  <header>
+    <h1>
+      <img src="https://imgproxy.attic.sh/insecure/f:png/plain/https://attic.sh/fl04pms2jkswavwx7p8cuws26bm2"
+           alt="MMA Glove" style="height: 1.5em; vertical-align: middle; margin-right: 0.3em;">
+      UFC AI Fight Prediction
+    </h1>
+    <nav>
+      <a href="{{ url_for('index') }}">Home</a>
+      <a href="{{ url_for('upcoming_page') }}">Next Fight Card</a>
+      <a href="{{ url_for('prediction_page') }}">AI Predictions</a>
+      <a href="{{ url_for('analysis_page') }}">Fight Analysis</a>
+    </nav>
+  </header>
 
-        <div class="fighter-input">
-            <label for="fighter2">Fighter 2:</label>
-            <input type="text" id="fighter2" placeholder="Enter fighter name">
-        </div>
+  <main class="container">
+    <div class="fighter-input">
+  <label for="fighter1">Fighter 1:</label><br>
+  <input type="text" id="fighter1" class="pill-input" placeholder="Enter fighter name">
+</div>
 
-        <button id="predict-btn">Predict Winner</button>
+<div class="fighter-input">
+  <label for="fighter2">Fighter 2:</label><br>
+  <input type="text" id="fighter2" class="pill-input" placeholder="Enter fighter name">
+</div>
 
-        <!-- Loading Spinner -->
-        <div id="loading" class="loading-spinner" style="display: none;"></div>
+    <button id="predict-btn">Predict Winner</button>
 
-        <div id="fighter-card" class="matchup-card" style="display: none;">
-            <div class="fighter">
-                <img id="fighter1-img" src="" alt="Fighter 1">
-                <p id="fighter1-name"></p>
-                <p class="win-rate" id="fighter1-win"></p>
-            </div>
+    <div id="loading" class="loading-spinner" style="display: none;"></div>
 
-            <div class="vs-text">VS</div>
+    <div id="fighter-card" class="matchup-card" style="display: none;">
+      <div class="fighter">
+        <img id="fighter1-img" src="" alt="Fighter 1" class="fighter-img-circle">
+        <p id="fighter1-name"></p>
+        <p class="win-rate" id="fighter1-win"></p>
+      </div>
 
-            <div class="fighter">
-                <img id="fighter2-img" src="" alt="Fighter 2">
-                <p id="fighter2-name"></p>
-                <p class="win-rate" id="fighter2-win"></p>
-            </div>
-        </div>
-    </main>
+      <div class="vs-text">VS</div>
 
-<script>
+      <div class="fighter">
+        <img id="fighter2-img" src="" alt="Fighter 2" class="fighter-img-circle">
+        <p id="fighter2-name"></p>
+        <p class="win-rate" id="fighter2-win"></p>
+      </div>
+    </div>
+  </main>
+
+  <script>
     document.getElementById("predict-btn").addEventListener("click", async () => {
-        const fighter1 = document.getElementById("fighter1").value.trim();
-        const fighter2 = document.getElementById("fighter2").value.trim();
+      const fighter1 = document.getElementById("fighter1").value.trim();
+      const fighter2 = document.getElementById("fighter2").value.trim();
 
-        // Show loading animation and hide previous results
-        document.getElementById("loading").style.display = "block";
-        document.getElementById("fighter-card").style.display = "none";
+      if (!fighter1 || !fighter2) {
+        alert("Please enter both fighter names.");
+        return;
+      }
 
-        await new Promise(resolve => setTimeout(resolve, 1500));
+      document.getElementById("loading").style.display = "block";
+      document.getElementById("fighter-card").style.display = "none";
 
-        const response = await fetch("http://127.0.0.1:5000/predict", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ fighter1, fighter2 })
+      try {
+        const response = await fetch("/predict", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ fighter1, fighter2 })
         });
 
         const data = await response.json();
-
         document.getElementById("loading").style.display = "none";
 
-        // Set fighter matchup details
         document.getElementById("fighter1-name").innerText = fighter1;
         document.getElementById("fighter2-name").innerText = fighter2;
 
-        // ✅ Correctly extract `win_rate` from JSON response
         document.getElementById("fighter1-win").innerText = `${data[fighter1]?.win_rate ?? "N/A"}% chance`;
         document.getElementById("fighter2-win").innerText = `${data[fighter2]?.win_rate ?? "N/A"}% chance`;
 
-        // ✅ Use Wikipedia or fallback image if unavailable
-        document.getElementById("fighter1-img").src = data[fighter1]?.image 
-            || `https://en.wikipedia.org/wiki/Special:FilePath/${fighter1.replace(" ", "_")}.jpg` 
-            || "https://via.placeholder.com/100";
+        document.getElementById("fighter1-img").src = data[fighter1]?.image || "https://via.placeholder.com/100";
+        document.getElementById("fighter2-img").src = data[fighter2]?.image || "https://via.placeholder.com/100";
 
-        document.getElementById("fighter2-img").src = data[fighter2]?.image 
-            || `https://en.wikipedia.org/wiki/Special:FilePath/${fighter2.replace(" ", "_")}.jpg` 
-            || "https://via.placeholder.com/100";
-
-        // Show fighter matchup card
         document.getElementById("fighter-card").style.display = "flex";
+      } catch (error) {
+        console.error("Prediction failed:", error);
+        alert("Failed to fetch prediction. Please try again later.");
+        document.getElementById("loading").style.display = "none";
+      }
     });
-</script>
+  </script>
 </body>
 </html>

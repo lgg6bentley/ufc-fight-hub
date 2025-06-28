@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fighter Database</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <header>
+    <h1>Fighter Database</h1>
+    <nav>
+      <a href="{{ url_for('index') }}">Home</a>
+      <a href="{{ url_for('fighters_page') }}">Fighter Database</a>
+      <a href="{{ url_for('upcoming_page') }}">Next Fight Card</a>
+      <a href="{{ url_for('prediction_page') }}">AI Predictions</a>
+      <a href="{{ url_for('analysis_page') }}">Fight Analysis</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    {% if fighters %}
+      <input
+        type="text"
+        id="search-bar"
+        placeholder="Search fighters..."
+        oninput="debouncedFilter()"
+      />
+
+      {% set grouped = {} %}
+      {% for name, image, record, weight_class in fighters %}
+        {% if weight_class not in grouped %}
+          {% set _ = grouped.update({weight_class: []}) %}
+        {% endif %}
+        {% set _ = grouped[weight_class].append((name, image, record)) %}
+      {% endfor %}
+
+      {% for weight_class, group in grouped.items() %}
+        <h2 class="weight-class-heading">{{ weight_class }}</h2>
+        <div class="fighter-grid">
+          {% for name, image, record in group %}
+            <div class="fighter-card">
+              <img src="{{ image }}" alt="{{ name }}" class="fighter-img-rect" />
+              <h3>{{ name }}</h3>
+              <p><strong>Record:</strong> {{ record }}</p>
+            </div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>No fighters found in the database.</p>
+    {% endif %}
+  </main>
+
+  <footer>
+    <p>&copy; 2025 UFC Fight Hub. All rights reserved.</p>
+  </footer>
+
+  <script>
+    let debounceTimer;
+    function debouncedFilter() {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        const input = document.getElementById('search-bar').value.toLowerCase();
+        const cards = document.getElementsByClassName('fighter-card');
+        for (let card of cards) {
+          const name = card.querySelector('h3').textContent.toLowerCase();
+          card.style.display = name.includes(input) ? '' : 'none';
+        }
+      }, 200);
+    }
+  </script>
+</body>
+</html>

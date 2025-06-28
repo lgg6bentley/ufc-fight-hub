@@ -134,3 +134,23 @@ fetch('/fight-card')
         });
     })
     .catch(error => console.error("Error loading fight card:", error));
+
+    function createFighterCard(fighter) {
+  const card = document.createElement("div");
+  card.className = "fighter-card";
+
+  card.innerHTML = `
+    <img src="${fighter.image}" alt="${fighter.name}" class="fighter-img">
+    <h3>${fighter.name}</h3>
+    <p><strong>Record:</strong> ${fighter.record}</p>
+    <p><strong>Weight Class:</strong> ${fighter.weight_class}</p>
+  `;
+
+  return card;
+}
+
+// Example usage:
+const fightersList = document.getElementById("fighters-list");
+fighters.forEach(fighter => {
+  fightersList.appendChild(createFighterCard(fighter));
+});

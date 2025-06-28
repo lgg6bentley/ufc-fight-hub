@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UFC Fight Hub - Home</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <header>
+    <h1>UFC FIGHT HUB</h1>
+    <nav>
+      <a href="{{ url_for('index') }}">Home</a>
+      <a href="{{ url_for('upcoming_page') }}">Next Fight Card</a>
+      <a href="{{ url_for('prediction_page') }}">AI Predictions</a>
+      <a href="{{ url_for('analysis_page') }}">Fight Analysis</a>
+      <a href="{{ url_for('fighters_page') }}">Fighter Database</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    {% if fighters %}
+      <input
+        type="text"
+        id="search-bar"
+        placeholder="Search fighters..."
+        onkeyup="filterFighters()"
+      />
+
+      <div class="fighter-grid">
+        {% for name, image, record, weight_class in fighters %}
+          <div class="fighter-card">
+            <img src="{{ image }}" alt="{{ name }}" class="fighter-img-rect" />
+            <h3>{{ name }}</h3>
+            <p><strong>Record:</strong> {{ record }}</p>
+            <p><strong>Weight Class:</strong> {{ weight_class }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>Welcome to UFC Fight Hub. Explore fighter stats, upcoming cards, and AI-powered predictions.</p>
+    {% endif %}
+  </main>
+
+  <script>
+    function filterFighters() {
+      const input = document.getElementById('search-bar').value.toLowerCase();
+      const cards = document.getElementsByClassName('fighter-card');
+      for (let card of cards) {
+        const name = card.querySelector('h3').textContent.toLowerCase();
+        card.style.display = name.includes(input) ? '' : 'none';
+      }
+    }
+  </script>
+</body>
+</html>

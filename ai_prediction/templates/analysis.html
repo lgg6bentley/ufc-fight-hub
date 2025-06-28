@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fight Analysis - Topuria vs. Oliveira</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <header>
+    <h1>Fight Analysis: Topuria vs. Oliveira</h1>
+    <nav>
+      <a href="{{ url_for('index') }}">Home</a>
+      <a href="{{ url_for('upcoming_page') }}">Next Fight Card</a>
+      <a href="{{ url_for('prediction_page') }}">AI Predictions</a>
+    <a href="{{ url_for('analysis_page') }}">Fight Analysis</a>
+    <a href="{{ url_for('fighters_page') }}">Fighter Database</a>
+    <a href="{{ url_for('download_bet_slip') }}" class="button" style="
+  display: inline-block;
+  margin: 20px 0;
+  padding: 12px 20px;
+  background-color: #ff8000;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  text-decoration: none;
+">
+  📄 Download Bet Slip (PDF)
+</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section id="fight-analysis">
+      <h2>🔥 UFC 317 Main Event Breakdown</h2>
+      <p>
+        This UFC 317 main event features Ilia Topuria's aggressive striking and grappling against Charles Oliveira's elite submission skills and dynamic offense, promising a high-level and unpredictable contest.
+      </p>
+
+      <div class="matchup-card">
+        <div class="fighter">
+          <div class="fighter-img-wrapper">
+            <img src="{{ url_for('static', filename='images/TOPURIA_ILIA.jpg') }}" alt="Ilia Topuria" class="fighter-img-circle">
+            {% if topuria_is_champ %}
+              <img src="{{ url_for('static', filename='images/champ_belt.png') }}" alt="Champion Belt" class="belt-overlay">
+            {% endif %}
+          </div>
+          <h3>Ilia Topuria</h3>
+        </div>
+
+        <div class="vs-text">VS</div>
+
+        <div class="fighter">
+          <div class="fighter-img-wrapper">
+            <img src="{{ url_for('static', filename='images/OLIVEIRA_CHARLES.jpg') }}" alt="Charles Oliveira" class="fighter-img-circle">
+            {% if oliveira_is_champ %}
+              <img src="{{ url_for('static', filename='images/champ_belt.png') }}" alt="Champion Belt" class="belt-overlay">
+            {% endif %}
+          </div>
+          <h3>Charles Oliveira</h3>
+        </div>
+      </div>
+
+      <div class="fight-stats">
+        <table class="stats-table">
+          <tr><th>Stat</th><th>Ilia Topuria</th><th>Charles Oliveira</th></tr>
+          <tr><td>Wins</td><td>15</td><td>34</td></tr>
+          <tr><td>Losses</td><td>0</td><td>9</td></tr>
+          <tr><td>KO/TKO Wins</td><td>5</td><td>10</td></tr>
+          <tr><td>Submission Wins</td><td>8</td><td>21</td></tr>
+          <tr><td>Reach</td><td>69 in</td><td>74 in</td></tr>
+          <tr><td>Height</td><td>5'7"</td><td>5'10"</td></tr>
+          <tr><td>Stance</td><td>Orthodox</td><td>Orthodox</td></tr>
+        </table>
+      </div>
+
+      <div class="winner-percentage">
+        <span>Ilia Topuria: 55% chance to win</span><br>
+        <span>Charles Oliveira: 45% chance to win</span>
+      </div>
+
+      <div class="interactive-buttons">
+        <button id="view-analysis">View Full Analysis</button>
+        <button id="predict-winner">Predict Winner</button>
+        <button id="watch-highlights">Watch Highlights</button>
+      </div>
+
+      <div id="analysis-content" class="analysis-box" style="display: none;">
+        <p>
+          Topuria’s pressure and power could test Oliveira’s durability, but Oliveira’s submission game and experience make him a constant threat. Expect Topuria to push the pace while Oliveira looks for creative finishes on the ground or feet.
+        </p>
+      </div>
+
+      <div id="winner-prediction" class="winner-box" style="display: none;"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 UFC Fight Hub. All rights reserved.</p>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const params = new URLSearchParams(window.location.search);
+      const fightName = params.get("fight");
+
+      if (fightName) {
+        document.getElementById("fight-analysis").innerHTML += `
+          <p>This fight, ${fightName}, features a high-paced battle between elite fighters.</p>`;
+      }
+
+      document.getElementById("view-analysis").addEventListener("click", () => {
+        document.getElementById("analysis-content").style.display = "block";
+      });
+
+      document.getElementById("predict-winner").addEventListener("click", () => {
+        const winner = Math.random() > 0.45 ? "Ilia Topuria" : "Charles Oliveira";
+        const box = document.getElementById("winner-prediction");
+        box.innerHTML = `Predicted Winner: <strong>${winner}</strong>`;
+        box.style.display = "block";
+      });
+
+      document.getElementById("watch-highlights").addEventListener("click", () => {
+        window.open("https://www.youtube.com/results?search_query=Ilia+Topuria+vs+Charles+Oliveira", "_blank");
+      });
+    });
+  </script>
+</body>
+</html>

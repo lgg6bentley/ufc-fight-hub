@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Upcoming UFC Fights</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <script>
+    function handleImageError(img) {
+      img.src = "/static/images/placeholder.jpg";
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <h1>Upcoming UFC Fights</h1>
+    <nav>
+      <a href="{{ url_for('index') }}">Home</a>
+      <a href="{{ url_for('upcoming_page') }}">Next Fight Card</a>
+      <a href="{{ url_for('prediction_page') }}">AI Predictions</a>
+      <a href="{{ url_for('analysis_page') }}">Fight Analysis</a>
+      <a href="{{ url_for('fighters_page') }}">Fighter Database</a>
+      <a href="{{ url_for('download_bet_slip') }}" class="button" style="margin-top: 20px; display: inline-block; padding: 12px 20px; background: #ff8000; color: black; font-weight: bold; border-radius: 8px; text-decoration: none;">
+  📄 Download Bet Slip (PDF)
+</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="event-info">
+      <h2>🏆 UFC 317</h2>
+      <p><strong>Date:</strong> July 28, 2025</p>
+      <p><strong>Location:</strong> T-Mobile Arena, Las Vegas, Nevada</p>
+      <img src="https://upload.wikimedia.org/wikipedia/en/5/5d/UFC_317_poster.jpeg" alt="UFC 317 Poster" class="event-poster" style="max-width: 100%; border-radius: 10px; margin: 20px 0;">
+    </section>
+
+    <input type="text" id="search-bar" placeholder="Search for fighters..." oninput="filterFights()" />
+
+    <section id="upcoming-fights">
+      <h2>Main Card</h2>
+      <!-- Fight cards will be injected here -->
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 UFC Fight Hub. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const mainCardFights = [
+      {
+        fighter1: "Ilia Topuria",
+        fighter2: "Charles Oliveira",
+        division: "Lightweight",
+        note: "Vacant UFC Lightweight Title",
+        image1: "/static/images/TOPURIA_ILIA.jpg",
+        image2: "/static/images/OLIVEIRA_CHARLES.jpg"
+      },
+      {
+        fighter1: "Alexandre Pantoja",
+        fighter2: "Kai Kara-France",
+        division: "Flyweight",
+        note: "UFC Flyweight Title",
+        image1: "/static/images/PANTOJA_ALEXANDRE.jpg",
+        image2: "/static/images/KARA_FRANCE_KAI.jpg"
+      },
+      {
+        fighter1: "Brandon Royval",
+        fighter2: "Joshua Van",
+        division: "Flyweight",
+        note: "Top contender bout",
+        image1: "/static/images/ROYVAL_BRANDON.jpg",
+        image2: "/static/images/VAN_JOSHUA.jpg"
+      },
+      {
+        fighter1: "Beneil Dariush",
+        fighter2: "Renato Moicano",
+        division: "Lightweight",
+        note: "Ranked matchup",
+        image1: "/static/images/DARIUSH_BENEIL.jpg",
+        image2: "/static/images/MOICANO_RENATO.jpg"
+      },
+      {
+        fighter1: "Payton Talbott",
+        fighter2: "Felipe Lima",
+        division: "Bantamweight",
+        note: "Rising prospects clash",
+        image1: "/static/images/TALBOTT_PAYTON.jpg",
+        image2: "/static/images/LIMA_FELIPE.jpg"
+      }
+    ];
+
+    const container = document.getElementById("upcoming-fights");
+
+    mainCardFights.forEach(fight => {
+      const card = document.createElement("div");
+      card.className = "fighter-card";
+
+      card.innerHTML = `
+        <div class="fight-images" style="display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 10px;">
+          <img src="${fight.image1}" alt="${fight.fighter1}" class="fighter-img-circle" onerror="handleImageError(this)">
+          <span class="vs-text">VS</span>
+          <img src="${fight.image2}" alt="${fight.fighter2}" class="fighter-img-circle" onerror="handleImageError(this)">
+        </div>
+        <h3>${fight.fighter1} vs. ${fight.fighter2}</h3>
+        <p><strong>Division:</strong> ${fight.division}</p>
+        <p><strong>Note:</strong> ${fight.note}</p>
+      `;
+
+      container.appendChild(card);
+    });
+
+    function filterFights() {
+      const query = document.getElementById("search-bar").value.toLowerCase();
+      const cards = document.querySelectorAll("#upcoming-fights .fighter-card");
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        card.style.display = text.includes(query) ? "" : "none";
+      });
+    }
+  </script>
+</body>
+</html>
