@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+*.pyc
+*.sqlite3
+*.db
+venv/
+.env
+
+# Node.js (if you ever re-introduce it in this folder)
+node_modules/
+npm-debug.log
+.DS_Store
