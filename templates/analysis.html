@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fight Analysis - {{ fighter_a_name }} vs. {{ fighter_b_name }}</title> {# Dynamic Title #}
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <script>
+    function handleImageError(img) {
+      img.src = "{{ url_for('static', filename='images/placeholder.jpg') }}";
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <h1>Fight Analysis: {{ fighter_a_name }} vs. {{ fighter_b_name }}</h1> {# Dynamic Header #}
+    <nav>
+      <a href="{{ url_for('index') }}">Home</a>
+      <a href="{{ url_for('upcoming_page') }}">Next Fight Card</a>
+      <a href="{{ url_for('prediction_page') }}">AI Predictions</a>
+      <a href="{{ url_for('analysis_page') }}">Fight Analysis</a>
+      <a href="{{ url_for('fighters_page') }}">Fighter Database</a>
+      <a href="{{ url_for('parlay_predictor') }}" class="button parlay-button">
+        🎯 Try the Parlay Predictor
+      </a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section id="fight-analysis">
+      <h2>🔥 {{ event }} Main Event Breakdown</h2> {# Dynamic Event Name #}
+      <p>
+        This analysis focuses on the highly anticipated main event of {{ event }}, featuring a clash between {{ fighter_a_name }} and {{ fighter_b_name }}.
+      </p>
+
+      <div class="matchup-card">
+        <div class="fighter">
+          <div class="fighter-img-wrapper">
+            <img src="{{ fighter_a_image }}" alt="{{ fighter_a_name }}" class="fighter-img-circle" onerror="handleImageError(this)"> {# Dynamic Image #}
+            {% if fighter_a_is_champ %}
+              <img src="{{ url_for('static', filename='images/champ_belt.png') }}" alt="Champion Belt" class="belt-overlay">
+            {% endif %}
+          </div>
+          <h3>{{ fighter_a_name }}</h3> {# Dynamic Name #}
+        </div>
+
+        <div class="fight-details">
+          <h1>Fight Analysis – {{ event }}</h1>
+          <p>Date: {{ date }}</p>
+          <p>Location: {{ location }}</p>
+          {% if fighter_a_is_champ %}
+            <p>{{ fighter_a_name }} enters as the reigning Champion.</p>
+          {% endif %}
+          {% if fighter_b_is_challenger %}
+            <p>{{ fighter_b_name }} looks to claim the title.</p>
+          {% endif %}
+        </div>
+
+        <div class="vs-text">VS</div>
+
+        <div class="fighter">
+          <div class="fighter-img-wrapper">
+            <img src="{{ fighter_b_image }}" alt="{{ fighter_b_name }}" class="fighter-img-circle" onerror="handleImageError(this)"> {# Dynamic Image #}
+          </div>
+          <h3>{{ fighter_b_name }}</h3> {# Dynamic Name #}
+        </div>
+      </div>
+
+      <div class="fight-stats">
+        <table class="stats-table">
+          <tr><th>Stat</th><th>{{ fighter_a_name }}</th><th>{{ fighter_b_name }}</th></tr> {# Dynamic Names #}
+          <tr><td>Record</td><td>{{ fighter_a_record }}</td><td>{{ fighter_b_record }}</td></tr> {# Dynamic Records #}
+          <tr><td>Weight Class</td><td>{{ fighter_a_weight_class }}</td><td>{{ fighter_b_weight_class }}</td></tr> {# Dynamic Weight Class #}
+          <tr><td>KO/TKO Wins</td><td>{{ fighter_a_koto_wins }}</td><td>{{ fighter_b_koto_wins }}</td></tr> {# NOW DYNAMIC #}
+          <tr><td>Submission Wins</td><td>{{ fighter_a_sub_wins }}</td><td>{{ fighter_b_sub_wins }}</td></tr> {# NOW DYNAMIC #}
+          <tr><td>Reach</td><td>{{ fighter_a_reach }} in</td><td>{{ fighter_b_reach }} in</td></tr> {# NOW DYNAMIC #}
+          <tr><td>Height</td><td>{{ fighter_a_height_ft }}'{{ fighter_a_height_in }}"</td><td>{{ fighter_b_height_ft }}'{{ fighter_b_height_in }}"</td></tr> {# NOW DYNAMIC #}
+          <tr><td>Stance</td><td>{{ fighter_a_stance }}</td><td>{{ fighter_b_stance }}</td></tr> {# NOW DYNAMIC #}
+        </table>
+      </div>
+
+      <div class="winner-percentage">
+        <span>{{ fighter_a_name }}: {{ "%0.0f" % fighter_a_win_chance }}% chance to win</span><br> {# NOW DYNAMIC #}
+        <span>{{ fighter_b_name }}: {{ "%0.0f" % fighter_b_win_chance }}% chance to win</span> {# NOW DYNAMIC #}
+      </div>
+
+      <div class="interactive-buttons">
+        <button id="view-analysis">View Full Analysis</button>
+        <button id="predict-winner">Predict Winner</button>
+        <button id="watch-highlights">Watch Highlights</button>
+      </div>
+
+      <div id="analysis-content" class="analysis-box" style="display: none;">
+        <p>
+          This section would contain a detailed, AI-generated analysis of the fight between {{ fighter_a_name }} and {{ fighter_b_name }}. It would cover their strengths, weaknesses, potential fight strategies, and key factors that might determine the outcome.
+          For example, it could discuss {{ fighter_a_name }}'s grappling dominance against {{ fighter_b_name }}'s striking prowess.
+        </p>
+      </div>
+
+      <div id="winner-prediction" class="winner-box" style="display: none;"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 UFC Fight Hub. All rights reserved.</p>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const fighterA = "{{ fighter_a_name }}";
+      const fighterB = "{{ fighter_b_name }}";
+
+      document.getElementById("view-analysis").addEventListener("click", () => {
+        document.getElementById("analysis-content").style.display = "block";
+      });
+
+      document.getElementById("predict-winner").addEventListener("click", () => {
+        // Use the win chances passed from Flask for a more realistic prediction
+        const fighterAWinChance = parseFloat("{{ fighter_a_win_chance }}");
+        const randomNum = Math.random() * 100;
+        const winner = randomNum < fighterAWinChance ? fighterA : fighterB;
+
+        const box = document.getElementById("winner-prediction");
+        box.innerHTML = `Predicted Winner: <strong>${winner}</strong>`;
+        box.style.display = "block";
+      });
+
+      document.getElementById("watch-highlights").addEventListener("click", () => {
+        window.open(`https://www.youtube.com/results?search_query=${fighterA.replace(' ', '+')}+vs+${fighterB.replace(' ', '+')}+highlights`, "_blank");
+      });
+    });
+  </script>
+</body>
+</html>

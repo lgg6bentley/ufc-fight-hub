@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Parlay Predictor</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <style>
+    /* Basic styling for the dropdown and parlay blocks */
+    #parlayType {
+      margin: 10px 0;
+      padding: 8px 12px;
+      font-size: 1.1rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+      cursor: pointer;
+    }
+    .parlay-block {
+      margin-top: 25px;
+      padding: 20px;
+      background-color: #2a2a2a; /* Darker background for parlay blocks */
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      color: #eee; /* Light text for dark background */
+    }
+    .parlay-block h3 {
+      color: #ff8000; /* Accent color for parlay type */
+      margin-bottom: 15px;
+      font-size: 1.8rem;
+    }
+    .parlay-block ul {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 20px;
+    }
+    .parlay-block li {
+      background-color: #3b3b3b; /* Slightly lighter background for list items */
+      margin-bottom: 10px;
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 5px solid #ff8000; /* Accent border */
+    }
+    .parlay-block li strong {
+      color: #fff;
+      font-size: 1.1rem;
+    }
+    .parlay-block p {
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+    }
+    .parlay-block p strong {
+      color: #ff8000;
+    }
+    .fight-list-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+      background-color: #2a2a2a; /* Consistent with main background */
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #444;
+    }
+    .fight-list-item img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #ff8000;
+    }
+    .fight-list-item span {
+      font-weight: bold;
+      color: #fff;
+    }
+    .fight-list-item .vs-text-small {
+      font-size: 0.8em;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🤖 AI-Powered Parlay Predictor</h1>
+    <nav>
+      <a href="{{ url_for('index') }}">Home</a>
+      <a href="{{ url_for('upcoming_page') }}">Next Fight Card</a>
+      <a href="{{ url_for('prediction_page') }}">AI Predictions</a>
+      <a href="{{ url_for('analysis_page') }}">Fight Analysis</a>
+      <a href="{{ url_for('fighters_page') }}">Fighter Database</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    {# Dynamic Event Name #}
+    <h2>Upcoming Event: {{ upcoming_fights[0].event_name if upcoming_fights else 'No Event' }}</h2>
+    <h3>Fight Card</h3>
+    <div class="fight-list">
+      {% for fight in upcoming_fights %}
+        <div class="fight-list-item">
+          <img src="{{ url_for('static', filename=fight.image_a) }}" alt="{{ fight.fighter_a }}" onerror="handleImageError(this)">
+          <span>{{ fight.fighter_a }}</span>
+          <span class="vs-text-small">vs</span>
+          <span>{{ fight.fighter_b }}</span>
+          <img src="{{ url_for('static', filename=fight.image_b) }}" alt="{{ fight.fighter_b }}" onerror="handleImageError(this)">
+          <span style="margin-left: auto; color: #aaa;">({{ fight.weight_class }})</span>
+        </div>
+      {% endfor %}
+    </div>
+
+    <hr>
+
+    <h2>AI-Generated Parlays</h2>
+
+    <div>
+      <label for="parlayType">Choose Parlay Type:</label>
+      <select id="parlayType" onchange="showParlay(this.value)">
+        <option value="safe">Safe</option>
+        <option value="risky">Risky</option>
+        <option value="wildcard">Wildcard</option>
+      </select>
+    </div>
+
+    <div id="parlayContainer">
+      {% for type, legs in parlays.items() %}
+        <div class="parlay-block" id="parlay-{{ type }}" style="display: none;">
+          <h3>{{ type|capitalize }} Parlay</h3>
+          <ul>
+            {% for leg in legs %}
+              <li>
+                <strong>{{ leg.fight }}</strong><br>
+                Pick: {{ leg.pick }}<br>
+                Type: {{ leg.type }}<br>
+                Estimated Odds: {{ leg.odds }}
+              </li>
+            {% endfor %}
+          </ul>
+          <p><strong>Total Odds:</strong> {{ "%.2f" % total_odds[type] }}</p> {# Format to 2 decimal places #}
+          <p><strong>Stake:</strong> ${{ "%.2f" % stake }}</p> {# Format to 2 decimal places #}
+          <p><strong>Projected Payout:</strong> ${{ "%.2f" % payouts[type] }}</p> {# Format to 2 decimal places #}
+          <hr>
+        </div>
+      {% endfor %}
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 UFC Fight Hub. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function showParlay(type) {
+      const blocks = document.querySelectorAll('.parlay-block');
+      blocks.forEach(block => block.style.display = 'none');
+      const selected = document.getElementById('parlay-' + type);
+      if (selected) selected.style.display = 'block';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      showParlay('safe');
+    });
+  </script>
+</body>
+</html>

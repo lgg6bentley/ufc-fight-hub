@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UFC Fight Hub - Home</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="home-body">
+  <header>
+    <h1 class="site-title">UFC FIGHT HUB</h1>
+    <nav class="main-nav">
+      <a href="{{ url_for('index') }}">Home</a>
+      <a href="{{ url_for('upcoming_page') }}">Next Fight Card</a>
+      <a href="{{ url_for('prediction_page') }}">AI Predictions</a>
+      <a href="{{ url_for('analysis_page') }}">Fight Analysis</a>
+      <a href="{{ url_for('fighters_page') }}">Fighter Database</a>
+    </nav>
+  </header>
+
+  <main class="home-container">
+    <h2>Welcome to <span class="highlight">UFC Fight Hub</span></h2>
+    <p>Explore fighter stats, upcoming cards, and AI-powered predictions.</p>
+
+    <section class="incoming-section">
+  <div style="display: flex; align-items: center; justify-content: center; gap: 16px;">
+    
+
+    <!-- UFC Logo -->
+    <img src="{{ url_for('static', filename='images/ufc-logo.png') }}" 
+         alt="UFC Logo" class="ufc-logo">
+
+   
+  </div>
+</section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 UFC Fight Hub. All rights reserved.</p>
+  </footer>
+</body>
+</html>
