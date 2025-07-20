@@ -5,6 +5,211 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Fight Analysis - {{ fighter_a_name }} vs. {{ fighter_b_name }}</title> {# Dynamic Title #}
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <style>
+    /* Specific styles for analysis.html to ensure proper image sizing and layout */
+    .matchup-card {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      background-color: #2a2a2a; /* Dark background for the card */
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+      margin-bottom: 30px;
+      flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    }
+
+    .fighter {
+      text-align: center;
+      flex: 1; /* Allow fighters to take equal space */
+      min-width: 180px; /* Minimum width before wrapping */
+    }
+
+    .fighter-img-wrapper {
+      position: relative;
+      width: 150px; /* Fixed size for the wrapper */
+      height: 150px;
+      margin: 0 auto 15px; /* Center and add bottom margin */
+      border-radius: 50%; /* Make it circular */
+      overflow: hidden; /* Hide overflow from circular image */
+      border: 4px solid #ff8000; /* Accent border */
+      box-shadow: 0 0 15px rgba(255, 128, 0, 0.6); /* Glow effect */
+    }
+
+    .fighter-img-circle {
+      width: 100%; /* Image fills its circular wrapper */
+      height: 100%;
+      object-fit: cover; /* Crop image to fit without distortion */
+      display: block; /* Remove extra space below image */
+    }
+
+    .belt-overlay {
+      position: absolute;
+      bottom: 5px; /* Position from bottom */
+      right: 5px; /* Position from right */
+      width: 50px; /* Size of the belt icon */
+      height: auto;
+      z-index: 10; /* Ensure it's above the fighter image */
+    }
+
+    .fighter h3 {
+      color: #fff;
+      font-size: 1.8rem;
+      margin-bottom: 0;
+    }
+
+    .vs-text {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #ff8000;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      margin: 0 20px;
+    }
+
+    .fight-details {
+      text-align: center;
+      flex: 2; /* Allow details to take more space */
+      min-width: 250px; /* Minimum width before wrapping */
+      color: #eee;
+    }
+    .fight-details h1 {
+      font-size: 2.2rem;
+      color: #ff8000;
+      margin-bottom: 10px;
+    }
+    .fight-details p {
+      font-size: 1.1rem;
+      margin-bottom: 5px;
+    }
+
+    .fight-stats {
+      width: 100%;
+      margin-top: 30px;
+      overflow-x: auto; /* Allow horizontal scrolling for table on small screens */
+    }
+
+    .stats-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0 auto;
+      background-color: #3b3b3b; /* Darker background for table */
+      color: #eee;
+      border-radius: 10px;
+      overflow: hidden; /* Ensures border-radius applies */
+    }
+
+    .stats-table th, .stats-table td {
+      border: 1px solid #555;
+      padding: 12px 15px;
+      text-align: left;
+    }
+
+    .stats-table th {
+      background-color: #ff8000; /* Accent color for headers */
+      color: #fff;
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 1.1rem;
+    }
+
+    .stats-table tr:nth-child(even) {
+      background-color: #4a4a4a; /* Alternate row color */
+    }
+
+    .winner-percentage {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #fff;
+    }
+    .winner-percentage span {
+      display: block; /* Each percentage on a new line */
+      margin-bottom: 10px;
+    }
+    .winner-percentage span:first-child {
+      color: #ff8000; /* Accent color for first fighter's chance */
+    }
+    .winner-percentage span:last-child {
+      color: #00bfff; /* Another accent color for second fighter's chance */
+    }
+
+    .interactive-buttons {
+      text-align: center;
+      margin-top: 30px;
+    }
+    .interactive-buttons button {
+      background-color: #ff8000;
+      color: #fff;
+      border: none;
+      padding: 12px 25px;
+      margin: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+    .interactive-buttons button:hover {
+      background-color: #e67300;
+      transform: translateY(-2px);
+    }
+
+    .analysis-box, .winner-box {
+      background-color: #3b3b3b;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+      color: #eee;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+    .winner-box {
+      font-size: 1.5rem;
+      font-weight: bold;
+      text-align: center;
+      color: #00bfff; /* Distinct color for winner prediction */
+    }
+
+    /* Responsive adjustments for smaller screens */
+    @media (max-width: 768px) {
+      .matchup-card {
+        flex-direction: column; /* Stack fighters vertically */
+        gap: 15px;
+      }
+      .fighter {
+        min-width: unset; /* Remove min-width to allow full flexibility */
+        width: 100%;
+      }
+      .fighter-img-wrapper {
+        width: 120px; /* Smaller images on small screens */
+        height: 120px;
+      }
+      .fighter h3 {
+        font-size: 1.5rem;
+      }
+      .vs-text {
+        font-size: 2rem;
+        margin: 10px 0;
+      }
+      .fight-details {
+        min-width: unset;
+        width: 100%;
+      }
+      .fight-details h1 {
+        font-size: 1.8rem;
+      }
+      .stats-table th, .stats-table td {
+        padding: 8px 10px;
+        font-size: 0.9rem;
+      }
+      .interactive-buttons button {
+        width: 90%;
+        margin: 5px auto;
+        display: block;
+      }
+    }
+  </style>
   <script>
     function handleImageError(img) {
       img.src = "{{ url_for('static', filename='images/placeholder.jpg') }}";

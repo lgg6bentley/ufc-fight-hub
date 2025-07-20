@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, 'fighters.db')
 
 # 🥊 Define Upcoming UFC Fight Card (UFC 319 - Actual Card based on user input)
-# Ensure dates are in the future relative to when you run this
+# IMPORTANT: Image paths here should NOT start with /static/
 upcoming_ufc_fights = [
     {
         "fighter_a": "Dricus Du Plessis",
@@ -32,8 +32,8 @@ upcoming_ufc_fights = [
         "event_name": "UFC 319: Du Plessis vs. Chimaev",
         "event_date": datetime(2025, 8, 16, 22, 0, 0), # August 16, 2025, 10 PM EST
         "location": "T-Mobile Arena, Las Vegas, NV", # Common UFC venue
-        "image_a": "/static/images/DU_PLESSIS_DRICUS.jpg",
-        "image_b": "/static/images/KHAMZAT_CHIMAEV.jpg",
+        "image_a": "images/DU_PLESSIS_DRICUS.jpg", # Corrected path
+        "image_b": "images/KHAMZAT_CHIMAEV.jpg", # Corrected path
         "note": "Middleweight Championship Bout"
     },
     {
@@ -46,8 +46,8 @@ upcoming_ufc_fights = [
         "event_name": "UFC 319: Du Plessis vs. Chimaev",
         "event_date": datetime(2025, 8, 16, 21, 30, 0),
         "location": "T-Mobile Arena, Las Vegas, NV",
-        "image_a": "/static/images/GEOFF_NEAL.jpg",
-        "image_b": "/static/images/CARLOS_PRATES.jpg",
+        "image_a": "images/GEOFF_NEAL.jpg", # Corrected path
+        "image_b": "images/CARLOS_PRATES.jpg", # Corrected path
         "note": "Co-main Event"
     },
     {
@@ -60,8 +60,8 @@ upcoming_ufc_fights = [
         "event_name": "UFC 319: Du Plessis vs. Chimaev",
         "event_date": datetime(2025, 8, 16, 21, 0, 0),
         "location": "T-Mobile Arena, Las Vegas, NV",
-        "image_a": "/static/images/JARED_CANNONIER.jpg",
-        "image_b": "/static/images/MICHAEL_PAGE.jpg",
+        "image_a": "images/JARED_CANNONIER.jpg", # Corrected path
+        "image_b": "images/MICHAEL_PAGE.jpg", # Corrected path
         "note": "Middleweight Clash"
     }
 ]
@@ -125,88 +125,88 @@ def generate_parlay_variants(fights, stake=100):
 
 def seed_fighters():
     # Expanded list of sample fighters
+    # IMPORTANT: Image paths here should NOT start with /static/
     sample_fighters = [
-        ("Jon Jones", "/static/images/JON_JONES.jpg", "28-1 (1 NC)", "Heavyweight"),
-        ("Stipe Miocic", "/static/images/STIPE_MIOCIC.jpg", "20-5", "Heavyweight"),
-        ("Ilia Topuria", "/static/images/ILIA_TOPURIA.jpg", "17-0", "Featherweight"),
-        ("Charles Oliveira", "/static/images/CHARLES_OLIVEIRA.jpg", "35-11 (1 NC)", "Lightweight"),
-        ("Islam Makhachev", "/static/images/ISLAM_MAKHACHEV.jpg", "27-1", "Lightweight"),
-        ("Alexander Volkanovski", "/static/images/ALEXANDER_VOLKANOVSKI.jpg", "27-4", "Featherweight"),
-        ("Dustin Poirier", "/static/images/POIRIER_DUSTIN.jpg", "30-9", "Lightweight"),
-        ("Max Holloway", "/static/images/HOLLOWAY_MAX.jpg", "26-7", "Featherweight"),
-        ("Sean O'Malley", "/static/images/OMALLEY_SEAN.jpg", "18-1", "Bantamweight"),
-        ("Merab Dvalishvili", "/static/images/DVALISHVILI_MERAB.jpg", "17-4", "Bantamweight"),
-        ("Bo Nickal", "/static/images/NICKAL_BO.jpg", "6-0", "Middleweight"),
-        ("André Muniz", "/static/images/MUNIZ_ANDRE.jpg", "23-6", "Middleweight"),
-        ("Kevin Holland", "/static/images/HOLLAND_KEVIN.jpg", "25-10", "Welterweight"),
-        ("Michel Pereira", "/static/images/PEREIRA_MICHEL.jpg", "30-11", "Welterweight"),
-        ("Maycee Barber", "/static/images/BARBER_MAYCEE.jpg", "14-2", "Women’s Flyweight"),
-        ("Erin Blanchfield", "/static/images/BLANCHFIELD_ERIN.jpg", "12-1", "Women’s Flyweight"),
-        ("Sean Strickland", "/static/images/STRICKLAND_SEAN.jpg", "29-7", "Middleweight"),
-        ("Dricus Du Plessis", "/static/images/DU_PLESSIS_DRICUS.jpg", "22-2", "Middleweight"),
-        ("Manon Fiorot", "/static/images/FIOROT_MANON.jpg", "12-1", "Women's Flyweight"),
-        ("Jiri Prochazka", "/static/images/JIRI_PROCHAZKA.jpg", "30-5", "Light Heavyweight"),
-        ("Alex Pereira", "/static/images/ALEX_PEREIRA.jpg", "13-3", "Light Heavyweight"),
-        ("Arman Tsarukyan", "/static/images/ARMAN_TSARUKYAN.jpg", "22-3", "Lightweight"),
-        ("Israel Adesanya", "/static/images/ISRAEL_ADESANYA.jpg", "24-3", "Middleweight"),
-        ("Jamahal Hill", "/static/images/JAMAHAL_HILL.jpg", "12-2", "Light Heavyweight"),
-        ("Ciryl Gane", "/static/images/CIRYL_GANE.jpg", "12-2", "Heavyweight"),
-        ("Tom Aspinall", "/static/images/TOM_ASPINALL.jpg", "15-3", "Heavyweight"),
-        ("Khamzat Chimaev", "/static/images/KHAMZAT_CHIMAEV.jpg", "14-0", "Middleweight"),
-        ("Geoff Neal", "/static/images/GEOFF_NEAL.jpg", "16-6", "Welterweight"),
-        ("Carlos Prates", "/static/images/CARLOS_PRATES.jpg", "21-7", "Welterweight"),
-        ("Jared Cannonier", "/static/images/JARED_CANNONIER.jpg", "18-8", "Middleweight"),
-        ("Michael Page", "/static/images/MICHAEL_PAGE.jpg", "23-3", "Welterweight"),
+        ("Jon Jones", "images/JON_JONES.jpg", "28-1 (1 NC)", "Heavyweight"),
+        ("Stipe Miocic", "images/STIPE_MIOCIC.jpg", "20-5", "Heavyweight"),
+        ("Ilia Topuria", "images/ILIA_TOPURIA.jpg", "17-0", "Featherweight"),
+        ("Charles Oliveira", "images/CHARLES_OLIVEIRA.jpg", "35-11 (1 NC)", "Lightweight"),
+        ("Islam Makhachev", "images/ISLAM_MAKHACHEV.jpg", "27-1", "Lightweight"),
+        ("Alexander Volkanovski", "images/ALEXANDER_VOLKANOVSKI.jpg", "27-4", "Featherweight"),
+        ("Dustin Poirier", "images/POIRIER_DUSTIN.jpg", "30-9", "Lightweight"),
+        ("Max Holloway", "images/HOLLOWAY_MAX.jpg", "26-7", "Featherweight"),
+        ("Sean O'Malley", "images/OMALLEY_SEAN.jpg", "18-1", "Bantamweight"),
+        ("Merab Dvalishvili", "images/DVALISHVILI_MERAB.jpg", "17-4", "Bantamweight"),
+        ("Bo Nickal", "images/NICKAL_BO.jpg", "6-0", "Middleweight"),
+        ("André Muniz", "images/MUNIZ_ANDRE.jpg", "23-6", "Middleweight"),
+        ("Kevin Holland", "images/HOLLAND_KEVIN.jpg", "25-10", "Welterweight"),
+        ("Michel Pereira", "images/PEREIRA_MICHEL.jpg", "30-11", "Welterweight"),
+        ("Maycee Barber", "images/BARBER_MAYCEE.jpg", "14-2", "Women’s Flyweight"),
+        ("Erin Blanchfield", "images/BLANCHFIELD_ERIN.jpg", "12-1", "Women’s Flyweight"),
+        ("Sean Strickland", "images/STRICKLAND_SEAN.jpg", "29-7", "Middleweight"),
+        ("Dricus Du Plessis", "images/DU_PLESSIS_DRICUS.jpg", "22-2", "Middleweight"),
+        ("Manon Fiorot", "images/FIOROT_MANON.jpg", "12-1", "Women's Flyweight"),
+        ("Jiri Prochazka", "images/JIRI_PROCHAZKA.jpg", "30-5", "Light Heavyweight"),
+        ("Alex Pereira", "images/ALEX_PEREIRA.jpg", "13-3", "Light Heavyweight"),
+        ("Arman Tsarukyan", "images/ARMAN_TSARUKYAN.jpg", "22-3", "Lightweight"),
+        ("Israel Adesanya", "images/ISRAEL_ADESANYA.jpg", "24-3", "Middleweight"),
+        ("Jamahal Hill", "images/JAMAHAL_HILL.jpg", "12-2", "Light Heavyweight"),
+        ("Ciryl Gane", "images/CIRYL_GANE.jpg", "12-2", "Heavyweight"),
+        ("Tom Aspinall", "images/TOM_ASPINALL.jpg", "15-3", "Heavyweight"),
+        ("Khamzat Chimaev", "images/KHAMZAT_CHIMAEV.jpg", "14-0", "Middleweight"),
+        ("Geoff Neal", "images/GEOFF_NEAL.jpg", "16-6", "Welterweight"),
+        ("Carlos Prates", "images/CARLOS_PRATES.jpg", "21-7", "Welterweight"),
+        ("Jared Cannonier", "images/JARED_CANNONIER.jpg", "18-8", "Middleweight"),
+        ("Michael Page", "images/MICHAEL_PAGE.jpg", "23-3", "Welterweight"),
         # Adding more fighters
-        ("Colby Covington", "/static/images/COLBY_COVINGTON.jpg", "17-4", "Welterweight"),
-        ("Leon Edwards", "/static/images/LEON_EDWARDS.jpg", "22-3", "Welterweight"),
-        ("Justin Gaethje", "/static/images/JUSTIN_GAETHJE.jpg", "25-5", "Lightweight"),
-        ("Brandon Moreno", "/static/images/BRANDON_MORENO.jpg", "21-8-2", "Flyweight"),
-        ("Deiveson Figueiredo", "/static/images/DEIVESON_FIGUEIREDO.jpg", "23-4-1", "Bantamweight"),
-        ("Aljamain Sterling", "/static/images/ALJAMAIN_STERLING.jpg", "24-4", "Featherweight"),
-        ("Paddy Pimblett", "/static/images/PADDY_PIMBLETT.jpg", "22-3", "Lightweight"),
-        ("Shavkat Rakhmonov", "/static/images/SHAVKAT_RAKHMONOV.jpg", "18-0", "Welterweight"),
-        ("Belal Muhammad", "/static/images/BELAL_MUHAMMAD.jpg", "23-3 (1 NC)", "Welterweight"),
-        ("Robert Whittaker", "/static/images/ROBERT_WHITTAKER.jpg", "26-7", "Middleweight"),
-        ("Paulo Costa", "/static/images/PAULO_COSTA.jpg", "14-4", "Middleweight"),
-        ("Sergei Pavlovich", "/static/images/SERGEI_PAVLOVICH.jpg", "18-2", "Heavyweight"),
-        ("Caio Borralho", "/static/images/CAIO_BORRALHO.jpg", "16-1 (1 NC)", "Middleweight"),
-        ("Brendan Allen", "/static/images/BRENDAN_ALLEN.jpg", "24-5", "Middleweight"),
-        ("Jessica Andrade", "/static/images/JESSICA_ANDRADE.jpg", "26-12", "Women's Strawweight"),
-        ("Zhang Weili", "/static/images/ZHANG_WEILI.jpg", "25-3", "Women's Strawweight"),
-        ("Amanda Lemos", "/static/images/AMANDA_LEMOS.jpg", "14-3-1", "Women's Strawweight"),
-        ("Rose Namajunas", "/static/images/ROSE_NAMAJUNAS.jpg", "13-6", "Women's Flyweight"),
-        ("Tatiana Suarez", "/static/images/TATIANA_SUAREZ.jpg", "11-0", "Women's Strawweight"),
-        ("Mayra Bueno Silva", "/static/images/MAYRA_BUENO_SILVA.jpg", "11-3-1 (1 NC)", "Women's Bantamweight"),
-        ("Julianna Pena", "/static/images/JULIANNA_PENA.jpg", "12-5", "Women's Bantamweight"),
-        ("Raul Rosas Jr.", "/static/images/RAUL_ROSAS_JR.jpg", "9-2", "Bantamweight"),
-        ("Muhammad Mokaev", "/static/images/MUHAMMAD_MOKAEV.jpg", "12-0 (1 NC)", "Flyweight"),
-        ("Manel Kape", "/static/images/MANEL_KAPE.jpg", "19-6", "Flyweight"),
-        ("Brandon Royval", "/static/images/BRANDON_ROYVAL.jpg", "16-8", "Flyweight"),
-        ("Kai Kara-France", "/static/images/KAI_KARA_FRANCE.jpg", "24-11 (1 NC)", "Flyweight"),
-        ("Alexandre Pantoja", "/static/images/ALEXANDRE_PANTOJA.jpg", "29-5", "Flyweight"),
-        ("Sean Brady", "/static/images/SEAN_BRADY.jpg", "16-1", "Welterweight"),
-        ("Jack Della Maddalena", "/static/images/JACK_DELLA_MADDALENA.jpg", "17-2", "Welterweight"),
-        ("Max Griffin", "/static/images/MAX_GRIFFIN.jpg", "20-12", "Welterweight"),
-        ("Stephen Thompson", "/static/images/STEPHEN_THOMPSON.jpg", "17-7-1", "Welterweight"),
-        ("Kevin Lee", "/static/images/KEVIN_LEE.jpg", "19-8", "Welterweight"),
-        ("Renato Moicano", "/static/images/RENATO_MOICANO.jpg", "19-5-1", "Lightweight"),
-        ("Beneil Dariush", "/static/images/BENEIL_DARIUSH.jpg", "22-6-1", "Lightweight"),
-        ("Mateusz Gamrot", "/static/images/MATEUSZ_GAMROT.jpg", "24-2 (1 NC)", "Lightweight"),
-        ("Charles Jourdain", "/static/images/CHARLES_JOURDAIN.jpg", "15-7-1", "Featherweight"),
-        ("Movsar Evloev", "/static/images/MOVSAR_EVLOEV.jpg", "18-0", "Featherweight"),
-        ("Arnold Allen", "/static/images/ARNOLD_ALLEN.jpg", "19-3", "Featherweight"),
-        ("Brian Ortega", "/static/images/BRIAN_ORTEGA.jpg", "16-3-1", "Featherweight"),
-        ("Yair Rodriguez", "/static/images/YAIR_RODRIGUEZ.jpg", "16-5 (1 NC)", "Featherweight"),
-        ("Magomed Ankalaev", "/static/images/MAGOMED_ANKALAEV.jpg", "19-1-1", "Light Heavyweight"),
-        ("Jan Blachowicz", "/static/images/JAN_BLACHOWICZ.jpg", "29-10-1", "Light Heavyweight"),
-        ("Nikita Krylov", "/static/images/NIKITA_KRYLOV.jpg", "30-9", "Light Heavyweight"),
-        ("Sergei Spivak", "/static/images/SERGEI_SPIVAK.jpg", "17-4", "Heavyweight"),
-        ("Tai Tuivasa", "/static/images/TAI_TUIVASA.jpg", "15-6", "Heavyweight"),
-        ("Curtis Blaydes", "/static/images/CURTIS_BLAYDES.jpg", "18-4 (1 NC)", "Heavyweight"),
-        ("Jailton Almeida", "/static/images/JAILTON_ALMEIDA.jpg", "21-3", "Heavyweight"),
-        # Corrected / Added Derrick Lewis
-        ("Derrick Lewis", "/static/images/DERRICK_LEWIS.jpg", "28-12-0 (1 NC)", "Heavyweight"),
+        ("Colby Covington", "images/COLBY_COVINGTON.jpg", "17-4", "Welterweight"),
+        ("Leon Edwards", "images/LEON_EDWARDS.jpg", "22-3", "Welterweight"),
+        ("Justin Gaethje", "images/JUSTIN_GAETHJE.jpg", "25-5", "Lightweight"),
+        ("Brandon Moreno", "images/BRANDON_MORENO.jpg", "21-8-2", "Flyweight"),
+        ("Deiveson Figueiredo", "images/DEIVESON_FIGUEIREDO.jpg", "23-4-1", "Bantamweight"),
+        ("Aljamain Sterling", "images/ALJAMAIN_STERLING.jpg", "24-4", "Featherweight"),
+        ("Paddy Pimblett", "images/PADDY_PIMBLETT.jpg", "22-3", "Lightweight"),
+        ("Shavkat Rakhmonov", "images/SHAVKAT_RAKHMONOV.jpg", "18-0", "Welterweight"),
+        ("Belal Muhammad", "images/BELAL_MUHAMMAD.jpg", "23-3 (1 NC)", "Welterweight"),
+        ("Robert Whittaker", "images/ROBERT_WHITTAKER.jpg", "26-7", "Middleweight"),
+        ("Paulo Costa", "images/PAULO_COSTA.jpg", "14-4", "Middleweight"),
+        ("Sergei Pavlovich", "images/SERGEI_PAVLOVICH.jpg", "18-2", "Heavyweight"),
+        ("Caio Borralho", "images/CAIO_BORRALHO.jpg", "16-1 (1 NC)", "Middleweight"),
+        ("Brendan Allen", "images/BRENDAN_ALLEN.jpg", "24-5", "Middleweight"),
+        ("Jessica Andrade", "images/JESSICA_ANDRADE.jpg", "26-12", "Women's Strawweight"),
+        ("Zhang Weili", "images/ZHANG_WEILI.jpg", "25-3", "Women's Strawweight"),
+        ("Amanda Lemos", "images/AMANDA_LEMOS.jpg", "14-3-1", "Women's Strawweight"),
+        ("Rose Namajunas", "images/ROSE_NAMAJUNAS.jpg", "13-6", "Women's Flyweight"),
+        ("Tatiana Suarez", "images/TATIANA_SUAREZ.jpg", "11-0", "Women's Strawweight"),
+        ("Mayra Bueno Silva", "images/MAYRA_BUENO_SILVA.jpg", "11-3-1 (1 NC)", "Women's Bantamweight"),
+        ("Julianna Pena", "images/JULIANNA_PENA.jpg", "12-5", "Women's Bantamweight"),
+        ("Raul Rosas Jr.", "images/RAUL_ROSAS_JR.jpg", "9-2", "Bantamweight"),
+        ("Muhammad Mokaev", "images/MUHAMMAD_MOKAEV.jpg", "12-0 (1 NC)", "Flyweight"),
+        ("Manel Kape", "images/MANEL_KAPE.jpg", "19-6", "Flyweight"),
+        ("Brandon Royval", "images/BRANDON_ROYVAL.jpg", "16-8", "Flyweight"),
+        ("Kai Kara-France", "images/KAI_KARA_FRANCE.jpg", "24-11 (1 NC)", "Flyweight"),
+        ("Alexandre Pantoja", "images/ALEXANDRE_PANTOJA.jpg", "29-5", "Flyweight"),
+        ("Sean Brady", "images/SEAN_BRADY.jpg", "16-1", "Welterweight"),
+        ("Jack Della Maddalena", "images/JACK_DELLA_MADDALENA.jpg", "17-2", "Welterweight"),
+        ("Max Griffin", "images/MAX_GRIFFIN.jpg", "20-12", "Welterweight"),
+        ("Stephen Thompson", "images/STEPHEN_THOMPSON.jpg", "17-7-1", "Welterweight"),
+        ("Kevin Lee", "images/KEVIN_LEE.jpg", "19-8", "Welterweight"),
+        ("Renato Moicano", "images/RENATO_MOICANO.jpg", "19-5-1", "Lightweight"),
+        ("Beneil Dariush", "images/BENEIL_DARIUSH.jpg", "22-6-1", "Lightweight"),
+        ("Mateusz Gamrot", "images/MATEUSZ_GAMROT.jpg", "24-2 (1 NC)", "Lightweight"),
+        ("Charles Jourdain", "images/CHARLES_JOURDAIN.jpg", "15-7-1", "Featherweight"),
+        ("Movsar Evloev", "images/MOVSAR_EVLOEV.jpg", "18-0", "Featherweight"),
+        ("Arnold Allen", "images/ARNOLD_ALLEN.jpg", "19-3", "Featherweight"),
+        ("Brian Ortega", "images/BRIAN_ORTEGA.jpg", "16-3-1", "Featherweight"),
+        ("Yair Rodriguez", "images/YAIR_RODRIGUEZ.jpg", "16-5 (1 NC)", "Featherweight"),
+        ("Magomed Ankalaev", "images/MAGOMED_ANKALAEV.jpg", "19-1-1", "Light Heavyweight"),
+        ("Jan Blachowicz", "images/JAN_BLACHOWICZ.jpg", "29-10-1", "Light Heavyweight"),
+        ("Nikita Krylov", "images/NIKITA_KRYLOV.jpg", "30-9", "Light Heavyweight"),
+        ("Sergei Spivak", "images/SERGEI_SPIVAK.jpg", "17-4", "Heavyweight"),
+        ("Tai Tuivasa", "images/TAI_TUIVASA.jpg", "15-6", "Heavyweight"),
+        ("Curtis Blaydes", "images/CURTIS_BLAYDES.jpg", "18-4 (1 NC)", "Heavyweight"),
+        ("Jailton Almeida", "images/JAILTON_ALMEIDA.jpg", "21-3", "Heavyweight"),
+        ("Derrick Lewis", "images/DERRICK_LEWIS.jpg", "28-12-0 (1 NC)", "Heavyweight"),
     ]
 
     conn = sqlite3.connect(DB_PATH)
@@ -416,6 +416,7 @@ def get_or_create_fighter(name):
         }
     else:
         stats = get_fighter_stats(name)
+        # IMPORTANT: get_fighter_image also needs to return path without /static/
         image = get_fighter_image(name)
         cursor.execute("INSERT INTO fighters VALUES (?, ?, ?, ?)", (
             name, image, stats["record"], stats["weight_class"]
@@ -450,12 +451,15 @@ def get_fighter_image(fighter_name):
         soup = BeautifulSoup(response.text, 'html.parser')
         image_tag = soup.find('img', class_='hero-profile__image')
         if image_tag and image_tag.get('src'):
+            # If fetching from UFC.com, return the full URL (not a static path)
             return image_tag['src']
     except requests.exceptions.RequestException:
         pass # Fallback to placeholder
 
     # Fallback to a generic placeholder if UFC.com fails
-    return "https://via.placeholder.com/100"
+    # IMPORTANT: This path should also be relative to static/
+    # It should be "images/placeholder.jpg"
+    return "images/placeholder.jpg" # Corrected path
 
 # Run the app
 if __name__ == "__main__":

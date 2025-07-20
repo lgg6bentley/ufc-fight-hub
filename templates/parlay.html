@@ -62,20 +62,43 @@
       border-radius: 8px;
       border: 1px solid #444;
     }
+    /* FIX: Ensure images within fight-list-item are properly sized */
     .fight-list-item img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #ff8000;
+      width: 80px; /* Increased size slightly for better visibility */
+      height: 80px; /* Maintain aspect ratio */
+      border-radius: 50%; /* Keep circular */
+      object-fit: cover; /* Ensure image covers the area without distortion */
+      border: 3px solid #ff8000; /* Slightly thicker accent border */
+      flex-shrink: 0; /* Prevent images from shrinking if space is tight */
     }
     .fight-list-item span {
       font-weight: bold;
       color: #fff;
+      white-space: nowrap; /* Prevent names from wrapping too early */
     }
     .fight-list-item .vs-text-small {
-      font-size: 0.8em;
+      font-size: 0.9em; /* Slightly larger for readability */
       color: #aaa;
+      margin: 0 5px; /* Add some spacing around "vs" */
+    }
+    /* Responsive adjustments for smaller screens */
+    @media (max-width: 768px) {
+      .fight-list-item {
+        flex-wrap: wrap; /* Allow items to wrap to next line */
+        justify-content: center; /* Center items when wrapped */
+        text-align: center;
+      }
+      .fight-list-item img {
+        width: 60px; /* Smaller images on small screens */
+        height: 60px;
+      }
+      .fight-list-item span {
+        font-size: 0.9em;
+      }
+      .fight-list-item .vs-text-small {
+        width: 100%; /* Make "vs" take full width when wrapped */
+        margin: 5px 0;
+      }
     }
   </style>
 </head>
@@ -149,6 +172,10 @@
   </footer>
 
   <script>
+    function handleImageError(img) {
+      img.src = "{{ url_for('static', filename='images/placeholder.jpg') }}";
+    }
+
     function showParlay(type) {
       const blocks = document.querySelectorAll('.parlay-block');
       blocks.forEach(block => block.style.display = 'none');
