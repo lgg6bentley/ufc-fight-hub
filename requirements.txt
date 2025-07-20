@@ -102,7 +102,6 @@ python-engineio==4.12.0
 python-json-logger==3.3.0
 python-socketio==5.13.0
 pytz==2025.2
-pywinpty==2.0.15
 PyYAML==6.0.2
 pyzmq==26.4.0
 qrcode==8.2
@@ -111,7 +110,6 @@ reportlab==4.4.2
 requests==2.32.4
 rfc3339-validator==0.1.4
 rfc3986-validator==0.1.1
-rpds-py==0.24.0
 scikit-learn==1.6.1
 scipy==1.15.3
 Send2Trash==1.8.3
