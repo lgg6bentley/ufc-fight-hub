@@ -1,11 +1,58 @@
-<!-- templates/prediction.html -->
 <!DOCTYPE html>
 <html>
 <head>
   <title>AI Predictions</title>
+  <style>
+    body {
+      background-color: #111;
+      color: #fff;
+      font-family: 'Impact', sans-serif;
+      text-align: center;
+      padding-top: 100px;
+    }
+
+    #nameDisplay {
+      font-size: 4rem;
+      animation: flicker 0.15s infinite;
+    }
+
+    .locked {
+      animation: none;
+      color: #e50914;
+      text-shadow: 0 0 10px #e50914;
+    }
+
+    @keyframes flicker {
+      0% { opacity: 1; }
+      50% { opacity: 0.3; }
+      100% { opacity: 1; }
+    }
+  </style>
 </head>
 <body>
   <h1>AI Prediction Page</h1>
   <p>Coming soon: win rates, stats, and Commander’s Picks.</p>
+
+  <div id="nameDisplay">Loading...</div>
+
+  <script>
+    const fighterNames = [
+      'Adesanya', 'Volkanovski', 'Nunes', 'Jones', 'Poirier', 'Gaethje', 'Shevchenko', 'O’Malley'
+    ];
+    const finalName = 'Commander’s Pick';
+    const nameDisplay = document.getElementById('nameDisplay');
+
+    let index = 0;
+    const flickerInterval = setInterval(() => {
+      nameDisplay.textContent = fighterNames[index % fighterNames.length];
+      index++;
+    }, 150);
+
+    setTimeout(() => {
+      clearInterval(flickerInterval);
+      nameDisplay.textContent = finalName;
+      nameDisplay.classList.add('locked');
+    }, 2000);
+  </script>
 </body>
 </html>
