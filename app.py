@@ -3,7 +3,7 @@ import random
 import sqlite3
 import requests
 from bs4 import BeautifulSoup
-from flask import Flask, render_template, request, jsonify, redirect, url_for
+from flask import Flask, render_template, request, jsonify
 from datetime import datetime
 
 app = Flask(__name__, template_folder="templates", static_folder="static")
@@ -11,6 +11,22 @@ app = Flask(__name__, template_folder="templates", static_folder="static")
 # Database path
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, 'fighters.db')
+
+# Hero Headliner for AI Showcase
+hero_fighters = [
+    {
+        "name": "Tom Aspinall",
+        "image": "images/TOM_ASPINALL.jpg",
+        "record": "14-3",
+        "weight_class": "Heavyweight"
+    },
+    {
+        "name": "Ciryl Gane",
+        "image": "images/CIRYL_GANE.jpg",
+        "record": "12-2",
+        "weight_class": "Heavyweight"
+    }
+]
 
 # White House Card: TBD
 upcoming_ufc_fights = [
@@ -33,6 +49,8 @@ upcoming_ufc_fights = [
 # Seed fighter database
 def seed_fighters():
     sample_fighters = [
+        ("Tom Aspinall", "images/TOM_ASPINALL.jpg", "14-3", "Heavyweight"),
+        ("Ciryl Gane", "images/CIRYL_GANE.jpg", "12-2", "Heavyweight"),
         ("Jan Blachowicz", "images/JAN_BLACHOWICZ.jpg", "29-10-1", "Light Heavyweight"),
         ("Nikita Krylov", "images/NIKITA_KRYLOV.jpg", "30-9", "Light Heavyweight"),
         ("Sergei Spivak", "images/SERGEI_SPIVAK.jpg", "17-4", "Heavyweight"),
@@ -62,7 +80,39 @@ def seed_fighters():
 # Routes
 @app.route('/')
 def index():
-    return redirect(url_for('upcoming_page'))
+    return render_template('index.html', hero_fighters=hero_fighters)
+
+@app.route('/predict', methods=['GET', 'POST'])
+def prediction_page():
+    if request.method == 'POST':
+        data = request.get_json()
+        fighter1 = data.get("fighter1")
+        fighter2 = data.get("fighter2")
+
+        prediction = {
+            fighter1: round(random.uniform(40, 60), 2),
+            fighter2: round(100 - random.uniform(40, 60), 2)
+        }
+
+        fighter1_data = get_or_create_fighter(fighter1)
+        fighter2_data = get_or_create_fighter(fighter2)
+
+        return jsonify({
+            fighter1: {
+                "win_rate": prediction[fighter1],
+                "image": fighter1_data["image"],
+                "record": fighter1_data["record"],
+                "weight_class": fighter1_data["weight_class"]
+            },
+            fighter2: {
+                "win_rate": prediction[fighter2],
+                "image": fighter2_data["image"],
+                "record": fighter2_data["record"],
+                "weight_class": fighter2_data["weight_class"]
+            }
+        })
+
+    return render_template('prediction.html', hero_fighters=hero_fighters)
 
 @app.route('/upcoming')
 def upcoming_page():
@@ -83,35 +133,6 @@ def fighters_page():
     fighters = cursor.fetchall()
     conn.close()
     return render_template('fighters.html', fighters=fighters)
-
-@app.route('/predict', methods=['POST'])
-def predict():
-    data = request.get_json()
-    fighter1 = data.get("fighter1")
-    fighter2 = data.get("fighter2")
-
-    prediction = {
-        fighter1: round(random.uniform(40, 60), 2),
-        fighter2: round(100 - random.uniform(40, 60), 2)
-    }
-
-    fighter1_data = get_or_create_fighter(fighter1)
-    fighter2_data = get_or_create_fighter(fighter2)
-
-    return jsonify({
-        fighter1: {
-            "win_rate": prediction[fighter1],
-            "image": fighter1_data["image"],
-            "record": fighter1_data["record"],
-            "weight_class": fighter1_data["weight_class"]
-        },
-        fighter2: {
-            "win_rate": prediction[fighter2],
-            "image": fighter2_data["image"],
-            "record": fighter2_data["record"],
-            "weight_class": fighter2_data["weight_class"]
-        }
-    })
 
 # Fighter data helpers
 def get_or_create_fighter(name):
