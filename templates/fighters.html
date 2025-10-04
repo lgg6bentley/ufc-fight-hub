@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fighter Database</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+            color: #fff;
+            text-align: center;
+            padding: 50px;
+        }
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3em;
+            margin-bottom: 30px;
+            color: #f5c518;
+            text-shadow: 2px 2px #000;
+        }
+        .fighter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+        .fighter-card {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 2px solid #f5c518;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+        }
+        .fighter-card img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        .fighter-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #f5c518;
+        }
+        .fighter-info {
+            font-size: 1em;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Fighter Database</h1>
+    <div class="fighter-grid">
+        {% for fighter in fighters %}
+        <div class="fighter-card">
+            <img src="{{ url_for('static', filename=fighter[1]) }}" alt="{{ fighter[0] }}">
+            <div class="fighter-name">{{ fighter[0] }}</div>
+            <div class="fighter-info">Record: {{ fighter[2] }}</div>
+            <div class="fighter-info">Weight Class: {{ fighter[3] }}</div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

@@ -8,6 +8,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto&display=swap" rel="stylesheet">
 </head>
 <body>
+
+  <nav class="top-nav">
+  <ul>
+    <li><a href="{{ url_for('index') }}">Home</a></li>
+<li><a href="{{ url_for('upcoming_page') }}">Fight Card</a></li>
+<li><a href="{{ url_for('prediction_page') }}">AI Predictions</a></li>
+<li><a href="{{ url_for('whitehouse_arena') }}">White House Arena</a></li>
+  </ul>
+</nav>
+
+
   <header class="banner">
   <h1>UFC x White House</h1>
   <p>The ultimate clash of power and precision — AI predicts the victor</p>
@@ -34,8 +45,20 @@
     </a>
   </section>
 
-  <footer>
-  <p>Built for fight fans and patriots. © 2025 Showdown AI</p>
+  <footer class="site-footer">
+  <div class="sponsor-section">
+    <div class="sponsor">
+      <img src="/static/images/trumpcoin_logo.png" alt="Trump Coin Logo" class="sponsor-logo">
+      <h4>Trump Coin</h4>
+      <p>The official digital asset of American resilience. Power your portfolio with patriotism.</p>
+    </div>
+    <div class="sponsor">
+      <img src="/static/images/solana_logo.png" alt="Solana Logo" class="sponsor-logo">
+      <h4>Solana</h4>
+      <p>Blazing-fast blockchain powering the future of decentralized combat sports.</p>
+    </div>
+  </div>
+  <p class="footer-note">© 2025 White House Arena. Sponsored by Trump Coin & Solana.</p>
 </footer>
 </body>
 </html>

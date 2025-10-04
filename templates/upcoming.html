@@ -3,52 +3,77 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{{ event_name }}</title>
+  <title>WHITE HOUSE UFC MAIN CARD: TBD</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-  <script>
-    function handleImageError(img) {
-      img.src = "{{ url_for('static', filename='images/placeholder.jpg') }}";
-    }
-  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header>
-    <h1>{{ event_name }}</h1>
-    <nav>
-      <a href="{{ url_for('index') }}">Home</a>
-      <a href="{{ url_for('upcoming_page') }}">Next Fight Card</a>
-      <a href="{{ url_for('fighters_page') }}">Fighter Database</a>
+
+  <!-- Header -->
+  <header class="main-header">
+    
+    <nav class="top-nav">
+      <ul>
+        <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('prediction_page') }}">AI Predictions</a></li>
+               <li><a href="{{ url_for('whitehouse_arena') }}">White House Arena</a></li>
+      </ul>
     </nav>
   </header>
 
+  <!-- Event Info -->
   <main class="container">
-    <section class="event-info">
-      <h2>📍 Location: {{ event_location }}</h2>
-      <p><strong>Date:</strong> {{ event_date }}</p>
-      <p><strong>Note:</strong> Presidential Fight Night Preview</p>
-    </section>
+    <section class="event-highlight">
+    <ul class="event-details">
+   
+  </ul><section class="whitehouse-card">
+  <h1>WHITE HOUSE UFC MAIN CARD: TBD</h1>
 
-    <section id="upcoming-fights">
-      <h2>Main Card</h2>
-      {% for fight in main_card_fights %}
-      <div class="fighter-card" data-fighter1="{{ fight.fighter_a }}" data-fighter2="{{ fight.fighter_b }}">
-        <div class="fight-images">
-          <img src="{{ url_for('static', filename=fight.image_a) }}" alt="{{ fight.fighter_a }}" class="fighter-img-circle" onerror="handleImageError(this)">
-          <span class="vs-text">VS</span>
-          <img src="{{ url_for('static', filename=fight.image_b) }}" alt="{{ fight.fighter_b }}" class="fighter-img-circle" onerror="handleImageError(this)">
-        </div>
-        <h3>{{ fight.fighter_a }} vs. {{ fight.fighter_b }}</h3>
-        <p><strong>Division:</strong> {{ fight.weight_class }}</p>
+  <div class="event-meta">
+    <p><strong>Location:</strong> The White House, Washington D.C.</p>
+    <p><strong>Date:</strong> November 11, 2025</p>
+    <p><strong>Note:</strong> Presidential Fight Night Preview</p>
+  </div>
+
+  <hr>
+
+</section>
+
+
+
+
+    <!-- Main Card Section -->
+<section id="main-card">
+    {% for fight in main_card_fights %}
+    <div class="fighter-card">
+        <h3>??? vs ???</h3>
+        <p><strong>Division:</strong> TBD</p>
+        <p><strong>Record:</strong> TBD</p>
         {% if fight.note %}
         <p><strong>Note:</strong> {{ fight.note }}</p>
         {% endif %}
+    </div>
+    {% endfor %}
+</section>
+
+
+    <!-- Speculative Section -->
+    <section id="jon-jones-speculation" class="highlight-box">
+      <h2>Will Dana White Add Jon Jones to the Card?</h2>
+      <div class="speculation-images">
+        <img src="{{ url_for('static', filename='images/president_trump.jpg') }}" alt="President Trump">
+        <img src="{{ url_for('static', filename='images/dana_white.jpg') }}" alt="Dana White">
+        <img src="{{ url_for('static', filename='images/jon_jones.jpg') }}" alt="Jon Jones">
       </div>
-      {% endfor %}
+      <p>With the White House as the venue and the card still in flux, fans are asking: will Jon Jones make a surprise return? Dana White has teased major announcements, and President Trump’s presence only raises the stakes. Could this be the most iconic UFC moment ever?</p>
+      <p><em>Stay tuned — the card is still TBD, and anything can happen.</em></p>
     </section>
   </main>
 
+  <!-- Footer -->
   <footer>
     <p>&copy; 2025 UFC Fight Hub. All rights reserved.</p>
   </footer>
+
 </body>
 </html>
