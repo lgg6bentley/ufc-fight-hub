@@ -1,313 +1,110 @@
-/* Base styles */
+/* Base Styles: Dark theme for combat sim feel */
 body {
-  margin: 0;
-  font-family: 'Roboto', sans-serif;
-  background-color: #f5f5f5;
-  color: #1a1a1a;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #0b0b0b; /* Deep Dark Background */
+    color: #f8f8f8; /* Light Text */
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Ensures full viewport height */
 }
 
-/* Header banner */
-.banner {
-  position: relative;
-  background: linear-gradient(135deg, #bf0a30 0%, #ffffff 50%, #002868 100%);
-  color: white;
-  text-align: center;
-  padding: 3rem 2rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  overflow: hidden;
-  z-index: 1;
+/* Splash Container: The main centered box */
+.splash-wrapper {
+    max-width: 800px;
+    padding: 40px;
+    border: 1px solid #333; 
+    border-radius: 10px;
+    background-color: #1a1a1a;
+    box-shadow: 0 0 20px rgba(227, 7, 7, 0.3); /* Subtle glow effect */
 }
 
-.banner::before {
-  content: "";
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.25); /* subtle dark overlay */
-  z-index: 0;
+/* Header Section */
+.splash-header {
+    margin-bottom: 30px;
 }
 
-.banner h1,
-.banner p {
-  position: relative;
-  z-index: 1;
+.splash-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 4em;
+    color: #e30707; /* Aggressive Red */
+    margin: 0 0 5px 0;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    text-shadow: 0 0 10px rgba(227, 7, 7, 0.7);
 }
 
-.banner h1 {
-  font-size: 3.2rem;
-  font-family: 'Playfair Display', serif;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  margin-bottom: 0.5rem;
-  text-shadow:
-    1px 1px 0 #000,
-    0 0 8px rgba(255, 255, 255, 0.2);
+.splash-header p {
+    font-size: 1.2em;
+    color: #aaa;
+    margin: 0;
 }
 
-.banner p {
-  font-size: 1.2rem;
-  font-style: italic;
-  opacity: 0.9;
-  text-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+/* Content Section */
+.splash-content {
+    margin-bottom: 40px;
 }
 
-/* Footer */
-footer {
-  background-color: #bf0a30;
-  color: white;
-  text-align: center;
-  padding: 1rem;
-  font-size: 0.95rem;
+.splash-content h2 {
+    color: #e30707;
+    font-size: 2em;
+    margin-bottom: 15px;
 }
 
-
-/* Arena section */
-.arena {
-  position: relative;
-  padding: 3rem 2rem;
-  text-align: center;
-  background-color: #ffffff;
-  overflow: hidden;
+.splash-content p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin-bottom: 30px;
 }
 
-.whitehouse-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url('{{ url_for('static', filename='images/whitehouse-ufc-card.png') }}') center center / cover no-repeat;
-  opacity: 0.1;
-  z-index: 0;
-  pointer-events: none;
+/* Call to Action Button */
+.cta-link {
+    text-decoration: none; /* Remove underline from the link */
 }
 
-/* Fighter grid */
-.fighter-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 2rem;
-  z-index: 1;
-  position: relative;
-  margin-bottom: 2rem;
-}
-
-.fighter-card {
-  background-color: #002868;
-  color: white;
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 0 12px rgba(0,0,0,0.3);
-  transition: transform 0.3s ease;
-}
-
-.fighter-card:hover {
-  transform: scale(1.05);
-}
-
-.fighter-card img {
-  width: 100%;
-  height: auto;
-  border-radius: 4px;
-  margin-bottom: 1rem;
-}
-
-.fighter-card h3 {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.2rem;
-  margin: 0;
-}
-
-/* CTA Button */
 .cta-btn {
-  background: #d4af37;
-  color: #002868;
-  padding: 14px 28px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-  z-index: 1;
-  position: relative;
+    background-color: #e30707;
+    color: white;
+    border: none;
+    padding: 18px 40px;
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.2s;
+    text-transform: uppercase;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
 .cta-btn:hover {
-  background: #ffd700;
+    background-color: #b50606;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
 }
 
 /* Footer */
-footer {
-  background-color: #002868;
-  color: white;
-  text-align: center;
-  padding: 1rem;
+.splash-footer {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px dashed #333;
+    font-size: 0.75em;
+    color: #666;
 }
 
-.top-nav {
-  background-color: #002868; /* Deep navy blue */
-  padding: 0.75rem 2rem;
-  text-align: center;
-  border-bottom: 3px solid #bf0a30; /* Patriotic red accent */
-}
-
-.top-nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-}
-
-.top-nav a {
-  color: #ffffff;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1.1rem;
-  letter-spacing: 0.5px;
-  transition: color 0.3s ease;
-}
-
-.top-nav a:hover {
-  color: #ffd700; /* Gold hover for elegance */
-}
-
-
-
-.speculation-images {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  margin: 2rem 0;
-  flex-wrap: wrap;
-}
-
-.speculation-images img {
-  width: 180px;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.speculation-images img:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-}
-
-.whitehouse-card {
-  background-color: #fff;
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  max-width: 700px;
-  margin: 2rem auto;
-  font-family: 'Roboto', sans-serif;
-}
-
-.whitehouse-card h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: 2rem;
-  color: #d32f2f;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-.event-meta p {
-  font-size: 1.1rem;
-  margin: 0.5rem 0;
-}
-
-hr {
-  margin: 1.5rem 0;
-  border: none;
-  border-top: 2px solid #eee;
-}
-
-.fight-preview h3 {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.fight-preview p {
-  font-size: 1rem;
-  margin: 0.3rem 0;
-}
-.site-footer {
-  background: linear-gradient(to right, #002868, #bf0a30); /* Navy to Red */
-  color: #ffffff;
-  padding: 2rem;
-  text-align: center;
-  font-family: 'Roboto', sans-serif;
-  border-top: 4px solid #ffd700;
-}
-
-.sponsor-section {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 3rem;
-  flex-wrap: wrap;
-  margin-bottom: 1rem;
-}
-
-.sponsor {
-  max-width: 300px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.sponsor-logo {
-  width: 80px;
-  height: 80px;
-  object-fit: contain;
-  margin-bottom: 0.5rem;
-}
-
-.sponsor h4 {
-  margin: 0.5rem 0 0.25rem;
-  font-size: 1.2rem;
-  color: #ffd700;
-}
-
-.sponsor p {
-  margin: 0;
-  font-size: 0.95rem;
-  line-height: 1.4;
-}
-
-.footer-note {
-  font-size: 0.9rem;
-  color: #ffd700;
-  margin-top: 1rem;
-}
-
-.arena-banner {
-  width: 100%;              /* Full width of the container */
-  max-height: 150px;        /* Restrict vertical size */
-  object-fit: cover;        /* Crop excess height if needed */
-  margin-bottom: 30px;
-  border: none;             /* Optional: remove border if it's too bold */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Optional: subtle shadow */
-}
-
-
-
-
-
-
-/* Responsive */
-@media (max-width: 768px) {
-  .banner h1 {
-    font-size: 2.2rem;
-  }
-
-  .fighter-grid {
-    grid-template-columns: 1fr;
-  }
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .splash-header h1 {
+        font-size: 3em;
+        letter-spacing: 2px;
+    }
+    .splash-wrapper {
+        padding: 20px;
+    }
+    .cta-btn {
+        padding: 15px 30px;
+        font-size: 1em;
+    }
 }
