@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}MMA WAR SIM{% endblock %}</title>
+    {# IMPORTANT: Ensure this path is correct for your style.css file! #}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> 
+</head>
+<body>
+    {# --- Header/Navigation --- #}
+    <header class="app-header">
+        <div class="container header-container">
+            <a href="{{ url_for('index') }}" class="logo-link">
+                <h1 class="app-title">MMA WAR SIM</h1>
+            </a>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="{{ url_for('index') }}" {% if request.path == url_for('index') %}class="active"{% endif %}>Home</a></li>
+                    <li><a href="{{ url_for('fighters_page') }}" {% if request.endpoint == 'fighters_page' %}class="active"{% endif %}>Fighters</a></li>
+                    <li><a href="{{ url_for('upcoming_page') }}" {% if request.endpoint == 'upcoming_page' %}class="active"{% endif %}>Upcoming</a></li>
+                    <li><a href="{{ url_for('prediction_page') }}" {% if request.endpoint == 'prediction_page' %}class="active"{% endif %}>Predict</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <div id="main-content">
+        {# The .container class is used for content centering on all pages #}
+        <div class="container"> 
+            {% block content %}{# Child templates fill this area #}{% endblock %}
+        </div>
+    </div>
+    
+    {# --- Footer --- #}
+    <footer class="app-footer">
+        <p>&copy; 2025 MMA WAR SIM. All data is for predictive analysis and entertainment purposes only.</p>
+    </footer>
+</body>
+</html>

@@ -1,37 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MMA WAR SIM - Launching Soon</title>
-  
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-  
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto&display=swap" rel="stylesheet">
-</head>
-<body>
+{% extends "base.html" %}
 
-  <div class="splash-wrapper">
-    
-    <header class="splash-header">
-      <h1>MMA WAR SIM</h1>
-      <p>The Future of AI-Powered Combat Simulation is Here.</p>
-    </header>
+{% block title %}MMA WAR SIM - Home{% endblock %}
 
-    <section class="splash-content">
-      <h2>Get Ready for Battle</h2>
-      <p>We are currently finalizing the AI models and optimizing the engine for an immersive, data-driven simulation experience. Follow us for launch updates!</p>
-      
-      <a href="mailto:updates@mma-war.com" class="cta-link">
-        <button class="cta-btn">Sign Up for Beta Access</button>
-      </a>
+{% block content %}
+<main class="container">
+    <section class="hero-section">
+        <h1 class="hero-title">Welcome to MMA WAR SIM</h1>
+        <p class="hero-tagline">Your AI-Powered MMA Fight Predictor.</p>
+        <a href="{{ url_for('prediction_page') }}" class="cta-btn primary-cta">Start Predicting</a>
     </section>
 
-    <footer class="splash-footer">
-      <p>A project by lgg6bentley. Powered by advanced Machine Learning. | &copy; 2025 MMA WAR SIM</p>
-    </footer>
+    {# You can put your hero_fighters loop logic here later #}
+    {% if hero_fighters %}
+    <section class="featured-fighters">
+        <h2>Featured Fighters</h2>
+        {# Loop through hero_fighters here #}
+    </section>
+    {% endif %}
 
-  </div>
-
-</body>
-</html>
+</main>
+{% endblock %}

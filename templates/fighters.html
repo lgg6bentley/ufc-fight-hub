@@ -1,65 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Fighter Database</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Roboto&display=swap" rel="stylesheet">
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-            color: #fff;
-            text-align: center;
-            padding: 50px;
-        }
-        h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 3em;
-            margin-bottom: 30px;
-            color: #f5c518;
-            text-shadow: 2px 2px #000;
-        }
-        .fighter-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-top: 20px;
-        }
-        .fighter-card {
-            background-color: rgba(255, 255, 255, 0.1);
-            border: 2px solid #f5c518;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-        }
-        .fighter-card img {
-            width: 100%;
-            border-radius: 10px;
-            margin-bottom: 15px;
-        }
-        .fighter-name {
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #f5c518;
-        }
-        .fighter-info {
-            font-size: 1em;
-            margin-top: 5px;
-        }
-    </style>
-</head>
-<body>
-    <h1>Fighter Database</h1>
-    <div class="fighter-grid">
-        {% for fighter in fighters %}
-        <div class="fighter-card">
-            <img src="{{ url_for('static', filename=fighter[1]) }}" alt="{{ fighter[0] }}">
-            <div class="fighter-name">{{ fighter[0] }}</div>
-            <div class="fighter-info">Record: {{ fighter[2] }}</div>
-            <div class="fighter-info">Weight Class: {{ fighter[3] }}</div>
-        </div>
-        {% endfor %}
+{% extends "base.html" %}
+
+{% block title %}Fighter Roster{% endblock %}
+
+{% block content %}
+<main class="container">
+    <h1 class="section-title">Fighter Roster</h1>
+
+    {# Optional: Add filter/search controls here later #}
+    <div class="filter-controls" style="margin-bottom: 25px;">
+        <input type="text" placeholder="Search Fighter Name..." class="search-input">
+        <select class="filter-select">
+            <option value="">All Weight Classes</option>
+            <option value="Bantamweight">Bantamweight</option>
+            <option value="Flyweight">Flyweight</option>
+            <option value="Light Heavyweight">Light Heavyweight</option>
+        </select>
     </div>
-</body>
-</html>
+
+    <div class="table-container">
+        {# Use the .data-table class defined in your CSS #}
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th class="px-4 py-3 text-left">Name</th>
+                    <th class="px-4 py-3 text-center">Record</th>
+                    <th class="px-4 py-3 text-center">Age</th>
+                    <th class="px-4 py-3 text-center">Stance</th>
+                    <th class="px-4 py-3 text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fighter in all_fighters %}
+                <tr>
+                    <td class="px-4 py-4 whitespace-nowrap font-medium text-white">{{ fighter.name }}</td>
+                    <td class="px-4 py-4 whitespace-nowrap text-center">{{ fighter.record }}</td>
+                    <td class="px-4 py-4 whitespace-nowrap text-center">{{ fighter.age }}</td>
+                    <td class="px-4 py-4 whitespace-nowrap text-center">{{ fighter.stance }}</td>
+                    <td class="px-4 py-4 whitespace-nowrap text-center">
+                        <a href="{{ url_for('prediction_page', f1=fighter.name) }}" 
+                           class="predict-link">
+                            Predict Fight
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+
+                {% if not all_fighters %}
+                <tr>
+                    <td colspan="5" class="px-4 py-4 text-center text-gray-500">
+                        No fighters found in the database. Run create_model.py.
+                    </td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</main>
+{% endblock %}
