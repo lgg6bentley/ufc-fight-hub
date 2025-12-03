@@ -323,10 +323,21 @@ body {
 
 .app-title {
     font-family: 'Playfair Display', serif;
-    font-size: 1.8em;
+    /* Removed fixed font size, letting the image size define it */
     margin: 0;
     color: var(--color-highlight-green);
+    /* Added alignment properties for the image */
+    display: flex; 
+    align-items: center;
 }
+
+/* UPDATED STYLES: Increased max-height for a slightly larger logo */
+.header-logo-image {
+    max-height: 85px; /* Increased from 50px */
+    width: auto; 
+    display: block; 
+}
+
 
 .main-nav ul {
     list-style: none;

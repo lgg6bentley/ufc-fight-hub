@@ -12,7 +12,13 @@
     <header class="app-header">
         <div class="container header-container">
             <a href="{{ url_for('index') }}" class="logo-link">
-                <h1 class="app-title">MMA WAR SIM</h1>
+                <h1 class="app-title">
+                    <img 
+                        src="{{ url_for('static', filename='images/MMA_Header.jpg') }}" 
+                        alt="MMA WAR SIM Logo" 
+                        class="header-logo-image"
+                    >
+                </h1>
             </a>
             <nav class="main-nav">
                 <ul>
