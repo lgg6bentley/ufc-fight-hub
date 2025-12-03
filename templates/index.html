@@ -1,22 +1,24 @@
 {% extends "base.html" %}
 
-{% block title %}MMA WAR SIM - Home{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block content %}
-<main class="container">
-    <section class="hero-section">
-        <h1 class="hero-title">Welcome to MMA WAR SIM</h1>
-        <p class="hero-tagline">Your AI-Powered MMA Fight Predictor.</p>
-        <a href="{{ url_for('prediction_page') }}" class="cta-btn primary-cta">Start Predicting</a>
-    </section>
+<div class="flex items-center justify-center min-h-[70vh]">
+    <div class="w-full max-w-2xl p-8 bg-[color:var(--card-bg)] rounded-2xl shadow-2xl text-center">
+        <h1 class="text-5xl font-extrabold text-accent mb-4 leading-tight">
+            Welcome to MMA WAR SIM
+        </h1>
+        <p class="text-xl text-gray-300 mb-8">
+            Your AI-Powered MMA Fight Predictor. Analyze the stats, simulate the matchup, and see the probabilities.
+        </p>
+        
+        <a href="{{ url_for('prediction_page') }}" class="inline-block px-10 py-4 text-lg font-bold text-gray-900 bg-accent rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition transform duration-300 ease-in-out">
+            <i class="fas fa-calculator mr-2"></i> START PREDICTING
+        </a>
 
-    {# You can put your hero_fighters loop logic here later #}
-    {% if hero_fighters %}
-    <section class="featured-fighters">
-        <h2>Featured Fighters</h2>
-        {# Loop through hero_fighters here #}
-    </section>
-    {% endif %}
-
-</main>
+        <div class="mt-8 text-sm text-gray-500">
+            <p>Powered by a custom-weighted Logistic Regression model.</p>
+        </div>
+    </div>
+</div>
 {% endblock %}

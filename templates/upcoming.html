@@ -1,89 +1,35 @@
 {% extends "base.html" %}
 
-{% block title %}Upcoming Fight Card - UFC 323{% endblock %}
+{% block title %}Upcoming Fights{% endblock %}
 
 {% block content %}
-<main class="container upcoming-page">
+<h2 class="text-4xl font-extrabold text-white mb-8 border-b border-accent pb-2">
+    Upcoming Fights
+</h2>
 
-    {# FIX: The dictionary definition is now on a single line to avoid Jinja TemplateSyntaxError #}
-    {% set fighter_images = {'Merab Dvalishvili': 'images/MERAB_DVALISHVILI.jpg', 'Petr Yan': 'images/PETR_YAN.jpg', 'Alexandre Pantoja': 'images/ALEXANDRE_PANTOJA.jpg', 'Joshua Van': 'images/JOSHUA_VAN.jpg', 'Brandon Moreno': 'images/BRANDON_MORENO.jpg', 'Tatsuro Taira': 'images/TATSURO_TAIRA.jpg', 'Henry Cejudo': 'images/HENRY_CEJUDO.jpg', 'Payton Talbott': 'images/PAYTON_TALBOTT.jpg', 'Jan Blachowicz': 'images/JAN_BLACHOWICZ.jpg', 'Bogdan Guskov': 'images/BOGDAN_GUSKOV.jpg', 'Default': 'images/default_fighter.jpg'} %}
+{% set upcoming_fights = [
+    ('Grappler A', 'Striker B', 'Main Event - UFC 300'),
+    ('W-R Fighter C', 'Journeyman D', 'Co-Main Event'),
+    ('Striker B', 'Grappler A', 'Rematch')
+] %}
 
-    {# --- Event Header --- #}
-    <section class="event-header">
-        <h1 class="hero-title">UFC 323: Dvalishvili vs. Yan 2</h1>
-        <p class="event-details">
-            📅 December 6, 2025 | 📍 T-Mobile Arena, Las Vegas, NV
-        </p>
-    </section>
-    
-    <hr style="margin-top: 20px; margin-bottom: 40px;">
-
-    {# --- Main Card Grid --- #}
-    <h2 class="section-title">Main Card</h2>
-
-    <section class="fight-card-grid">
-
-        {# Define the fights in the correct Main Card order #}
-        {% set main_card_fights = [
-            {'f1': 'Merab Dvalishvili', 'f2': 'Petr Yan', 'weight': 'Bantamweight', 'title': True},
-            {'f1': 'Alexandre Pantoja', 'f2': 'Joshua Van', 'weight': 'Flyweight', 'title': True},
-            {'f1': 'Brandon Moreno', 'f2': 'Tatsuro Taira', 'weight': 'Flyweight', 'title': False},
-            {'f1': 'Henry Cejudo', 'f2': 'Payton Talbott', 'weight': 'Bantamweight', 'title': False},
-            {'f1': 'Jan Blachowicz', 'f2': 'Bogdan Guskov', 'weight': 'Light Heavyweight', 'title': False}
-        ] %}
+<div class="space-y-6">
+    {% for f1, f2, event in upcoming_fights %}
+    <div class="bg-[color:var(--card-bg)] p-6 rounded-xl shadow-lg flex flex-col md:flex-row justify-between items-center transition duration-300 hover:border-l-4 border-accent">
+        <div class="text-center md:text-left mb-4 md:mb-0">
+            <p class="text-sm font-medium text-gray-400 mb-1">{{ event }}</p>
+            <h3 class="text-3xl font-extrabold text-white">
+                {{ f1 }} <span class="text-accent text-lg mx-3">vs</span> {{ f2 }}
+            </h3>
+        </div>
         
-        {# Loop through the fight data #}
-        {% for fight in main_card_fights %}
-            {% set fight_class = "main-event title-bout" if loop.index == 1 else "fight-card" %}
-            
-            {# Fetch the odds that were stored in the database setup #}
-            {% set odds_f1 = 'N/A' %}
-            {% set odds_f2 = 'N/A' %}
-            
-            {% if fight.f1 == 'Merab Dvalishvili' %}{% set odds_f1 = '-600' %}{% set odds_f2 = '+400' %}{% endif %}
-            {% if fight.f1 == 'Alexandre Pantoja' %}{% set odds_f1 = '-210' %}{% set odds_f2 = '+175' %}{% endif %}
-            {% if fight.f1 == 'Brandon Moreno' %}{% set odds_f1 = '+115' %}{% set odds_f2 = '-135' %}{% endif %}
-            {% if fight.f1 == 'Henry Cejudo' %}{% set odds_f1 = '+235' %}{% set odds_f2 = '-290' %}{% endif %}
-            {% if fight.f1 == 'Jan Blachowicz' %}{% set odds_f1 = '-125' %}{% set odds_f2 = '+105' %}{% endif %}
+        <a href="{{ url_for('prediction_page', f1=f1, f2=f2) }}" 
+           class="py-2 px-6 text-sm font-bold text-gray-900 bg-accent rounded-full hover:bg-opacity-90 transition duration-150 ease-in-out">
+            <i class="fas fa-chart-line mr-2"></i> Simulate Now
+        </a>
+    </div>
+    {% endfor %}
+</div>
 
-            <div class="fight-card {{ 'title-bout' if fight.title else '' }} {{ 'main-event' if loop.index == 1 }}">
-                <p class="weight-class">
-                    {{ fight.weight }} 
-                    {% if fight.title %}— **TITLE FIGHT** 🏆{% endif %}
-                </p>
-
-                <div class="fighter-comparison">
-                    {# Fighter 1 #}
-                    <div class="fighter-info" style="text-align: left;">
-                        <img src="{{ url_for('static', filename=fighter_images.get(fight.f1, fighter_images.get('Default'))) }}" 
-                             alt="{{ fight.f1 }}" 
-                             style="border-color: var(--color-highlight-green);">
-                        <p class="name">{{ fight.f1 }}</p>
-                        <span class="odds" style="color: var(--color-odds-fav);">{{ odds_f1 }}</span>
-                    </div>
-
-                    {# VS Center #}
-                    <div class="vs-center">
-                        <span class="vs">VS</span>
-                        {# Link to the prediction page with both fighters pre-selected #}
-                        <a href="{{ url_for('prediction_page', f1=fight.f1, f2=fight.f2) }}" class="predict-btn-small">
-                            AI Predict
-                        </a>
-                    </div>
-
-                    {# Fighter 2 #}
-                    <div class="fighter-info" style="text-align: right;">
-                        <img src="{{ url_for('static', filename=fighter_images.get(fight.f2, fighter_images.get('Default'))) }}" 
-                             alt="{{ fight.f2 }}" 
-                             style="border-color: var(--color-highlight-red);">
-                        <p class="name">{{ fight.f2 }}</p>
-                        <span class="odds" style="color: var(--color-odds-dog);">{{ odds_f2 }}</span>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-
-    </section>
-
-</main>
+<p class="mt-8 text-gray-500 text-sm">Note: Sample fights are hardcoded for demonstration purposes.</p>
 {% endblock %}

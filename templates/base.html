@@ -3,44 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}MMA WAR SIM{% endblock %}</title>
-    {# IMPORTANT: Ensure this path is correct for your style.css file! #}
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> 
+    <title>MMA WAR SIM - {% block title %}{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        /* Custom Tailwind Configuration (using the accent color: #00FF99) */
+        :root {
+            --accent-green: #00FF99;
+            --dark-bg: #1A1A2E;
+            --card-bg: #1F2842;
+        }
+        .text-accent { color: var(--accent-green); }
+        .bg-accent { background-color: var(--accent-green); }
+        .border-accent { border-color: var(--accent-green); }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: #E0E0E0; /* Light gray text */
+        }
+    </style>
 </head>
 <body>
-    {# --- Header/Navigation --- #}
-    <header class="app-header">
-        <div class="container header-container">
-            <a href="{{ url_for('index') }}" class="logo-link">
-                <h1 class="app-title">
-                    <img 
-                        src="{{ url_for('static', filename='images/MMA_Header.jpg') }}" 
-                        alt="MMA WAR SIM Logo" 
-                        class="header-logo-image"
-                    >
-                </h1>
-            </a>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="{{ url_for('index') }}" {% if request.path == url_for('index') %}class="active"{% endif %}>Home</a></li>
-                    <li><a href="{{ url_for('fighters_page') }}" {% if request.endpoint == 'fighters_page' %}class="active"{% endif %}>Fighters</a></li>
-                    <li><a href="{{ url_for('upcoming_page') }}" {% if request.endpoint == 'upcoming_page' %}class="active"{% endif %}>Upcoming</a></li>
-                    <li><a href="{{ url_for('prediction_page') }}" {% if request.endpoint == 'prediction_page' %}class="active"{% endif %}>Predict</a></li>
-                </ul>
+
+    <!-- Header / Navigation Bar -->
+    <header class="shadow-lg bg-gray-900/50 backdrop-blur-sm sticky top-0 z-10">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <nav class="flex items-center justify-between h-16">
+                <!-- Logo / Title -->
+                <div class="flex-shrink-0">
+                    <a href="{{ url_for('index') }}" class="text-xl font-extrabold text-white flex items-center">
+                        <!-- Using the sleek MWS Icon (W, R, S merged) with boxing gloves -->
+                        <div class="p-2 mr-2 rounded-full border-2 border-accent text-accent">
+                            <i class="fas fa-fist-raised"></i>
+                        </div>
+                        MMA WAR SIM
+                    </a>
+                </div>
+                
+                <!-- Menu Items -->
+                <div class="flex space-x-6">
+                    <a href="{{ url_for('index') }}" 
+                       class="text-gray-300 hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition duration-150 ease-in-out {% if request.path == url_for('index') %}text-accent border-b-2 border-accent{% endif %}">
+                        Home
+                    </a>
+                    <a href="{{ url_for('fighters_page') }}" 
+                       class="text-gray-300 hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition duration-150 ease-in-out {% if request.path == url_for('fighters_page') %}text-accent border-b-2 border-accent{% endif %}">
+                        Fighters
+                    </a>
+                    <a href="{{ url_for('upcoming_page') }}" 
+                       class="text-gray-300 hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition duration-150 ease-in-out {% if request.path == url_for('upcoming_page') %}text-accent border-b-2 border-accent{% endif %}">
+                        Upcoming
+                    </a>
+                    <a href="{{ url_for('prediction_page') }}" 
+                       class="text-gray-300 hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition duration-150 ease-in-out {% if request.path.startswith(url_for('prediction_page')) %}text-accent border-b-2 border-accent{% endif %}">
+                        Predict
+                    </a>
+                </div>
             </nav>
         </div>
     </header>
-    
-    <div id="main-content">
-        {# The .container class is used for content centering on all pages #}
-        <div class="container"> 
-            {% block content %}{# Child templates fill this area #}{% endblock %}
-        </div>
-    </div>
-    
-    {# --- Footer --- #}
-    <footer class="app-footer">
-        <p>&copy; 2025 MMA WAR SIM. All data is for predictive analysis and entertainment purposes only.</p>
-    </footer>
+
+    <!-- Main Content Block -->
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {% block content %}{% endblock %}
+    </main>
+
 </body>
 </html>

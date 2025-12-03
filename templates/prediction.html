@@ -1,124 +1,131 @@
 {% extends "base.html" %}
 
-{% block title %}AI Fight Prediction{% endblock %}
+{% block title %}Prediction{% endblock %}
 
 {% block content %}
-<main class="container prediction-page">
 
-    <h1 class="text-4xl font-extrabold mb-8 text-center">Simulate Fight Outcome</h1>
+<!-- Prediction Form -->
+<div class="bg-[color:var(--card-bg)] p-6 rounded-2xl shadow-xl mb-12">
+    <h2 class="text-3xl font-bold text-white mb-6 border-b border-gray-700 pb-3">
+        Fight Prediction Simulator
+    </h2>
+    <form method="POST" action="{{ url_for('prediction_page') }}" class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+        
+        <!-- Fighter A Input -->
+        <div class="col-span-1">
+            <label for="fighter_a_name" class="block text-sm font-medium text-gray-300 mb-2">Fighter A Name</label>
+            <input type="text" id="fighter_a_name" name="fighter_a_name" 
+                   value="{{ prediction_result.fighter_a if prediction_result else '' }}"
+                   required 
+                   class="w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:ring-accent focus:border-accent transition duration-150"
+                   placeholder="e.g., Grappler A">
+        </div>
 
-    {# --- Prediction Form (Always visible) --- #}
-    <form method="POST" action="{{ url_for('prediction_page') }}" class="prediction-form">
-        <div class="fighter-selection-container">
-            {# Input for Fighter A #}
-            <input type="text" name="fighter_a_name" placeholder="Fighter A Name" required 
-                   value="{{ prediction_result.fighter_a if prediction_result.fighter_a else '' }}">
-            
-            <span class="vs">VS</span>
-
-            {# Input for Fighter B #}
-            <input type="text" name="fighter_b_name" placeholder="Fighter B Name" required 
-                   value="{{ prediction_result.fighter_b if prediction_result.fighter_b else '' }}">
+        <!-- VS Label -->
+        <div class="col-span-1 flex items-center justify-center text-center">
+            <span class="text-2xl font-extrabold text-red-500">VS</span>
         </div>
         
-        <button type="submit" class="run-prediction-btn">
-            Run AI Prediction
-        </button>
-    </form>
-
-    {% if prediction_result and prediction_result.error %}
-        {# --- Error Message Display --- #}
-        <div class="prediction-results-display" style="border-color: var(--color-highlight-red);">
-            <p class="prediction-summary" style="color: var(--color-highlight-red);">
-                {{ prediction_result.error }}
-            </p>
+        <!-- Fighter B Input -->
+        <div class="col-span-1">
+            <label for="fighter_b_name" class="block text-sm font-medium text-gray-300 mb-2">Fighter B Name</label>
+            <input type="text" id="fighter_b_name" name="fighter_b_name" 
+                   value="{{ prediction_result.fighter_b if prediction_result else '' }}"
+                   required 
+                   class="w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:ring-accent focus:border-accent transition duration-150"
+                   placeholder="e.g., Striker B">
         </div>
-    {% elif prediction_result and prediction_result.win_rate_a %}
-        {# --- Prediction Results Display (POST Request) --- #}
-        <div class="prediction-results-display">
-            <h2>Prediction Result: {{ prediction_result.fighter_a }} vs {{ prediction_result.fighter_b }}</h2>
 
-            {# 1. Probability Bar #}
-            <div class="probability-container">
-                <p class="prediction-summary">AI Model Confidence:</p>
-                <div class="probability-bar-track">
-                    <div class="probability-segment winner" style="width: {{ prediction_result.win_rate_a }}%;">
-                        {{ prediction_result.fighter_a }}: {{ prediction_result.win_rate_a }}%
-                    </div>
-                    <div class="probability-segment loser" style="width: {{ prediction_result.win_rate_b }}%;">
-                        {{ prediction_result.fighter_b }}: {{ prediction_result.win_rate_b }}%
-                    </div>
-                </div>
-                <p class="prediction-summary">
-                    **Predicted Winner:** <span style="color: var(--color-highlight-green); font-weight: bold;">
-                    {% if prediction_result.win_rate_a > prediction_result.win_rate_b %}
-                        {{ prediction_result.fighter_a }}
-                    {% else %}
-                        {{ prediction_result.fighter_b }}
-                    {% endif %}
-                    </span>
-                </p>
-            </div>
+        <!-- Submit Button (Full Width on Mobile) -->
+        <div class="col-span-1 md:col-span-3">
+            <button type="submit" 
+                    class="w-full py-3 px-6 text-lg font-bold text-gray-900 bg-accent rounded-lg hover:bg-opacity-90 transition duration-150 ease-in-out">
+                <i class="fas fa-bolt mr-2"></i> RUN SIMULATION
+            </button>
+        </div>
+    </form>
+</div>
 
-            {# 2. Tale of the Tape Grid #}
-            <h3>Tale of the Tape (Stats Comparison)</h3>
-            <div class="tale-of-tape-grid">
-                
-                {# Fighter A Stats Column #}
-                <div class="fighter-stats-column">
-                    <h3>{{ prediction_result.fighter_a }}</h3>
-                    <div class="stat-value odds favorite">{{ prediction_result.stats_a.odds if prediction_result.stats_a.odds < 0 else '+' ~ prediction_result.stats_a.odds }}</div>
-                    <div class="stat-value">{{ prediction_result.fighter_a_data.record }}</div>
-                    <div class="stat-value">{{ prediction_result.stats_a.height_in // 12 }}'{{ prediction_result.stats_a.height_in % 12 }}"</div>
-                    <div class="stat-value">{{ prediction_result.stats_a.reach_in }}"</div>
-                    <div class="stat-value">{{ prediction_result.stats_a.age }}</div>
-                    <div class="stat-value">{{ prediction_result.stats_a.stance }}</div>
-                    <div class="stat-value highlight-stat">{{ "%.2f"|format(prediction_result.stats_a.sig_str_lpm) }}</div>
-                    <div class="stat-value highlight-stat">{{ "%.2f"|format(prediction_result.stats_a.sig_str_acc_pct) }}%</div>
-                    <div class="stat-value highlight-stat">{{ "%.2f"|format(prediction_result.stats_a.td_avg) }}</div>
-                    <div class="stat-value highlight-stat">{{ "%.2f"|format(prediction_result.stats_a.td_acc_pct) }}%</div>
-                    <div class="stat-value highlight-stat">{{ "%.2f"|format(prediction_result.stats_a.sub_avg) }}</div>
-                </div>
+<!-- Prediction Results -->
+{% if prediction_result and prediction_result.stats_a and prediction_result.stats_b %}
 
-                {# Metric Labels Column #}
-                <div class="metric-labels-column">
-                    <div class="metric-label">ODDS</div>
-                    <div class="metric-label">RECORD</div>
-                    <div class="metric-label">HEIGHT</div>
-                    <div class="metric-label">REACH</div>
-                    <div class="metric-label">AGE</div>
-                    <div class="metric-label">STANCE</div>
-                    <div class="metric-label important-stat">SIG STR / MIN</div>
-                    <div class="metric-label important-stat">STR ACC</div>
-                    <div class="metric-label important-stat">TD AVG</div>
-                    <div class="metric-label important-stat">TD ACC</div>
-                    <div class="metric-label important-stat">SUB AVG</div>
-                </div>
-
-                {# Fighter B Stats Column #}
-                <div class="fighter-stats-column">
-                    <h3>{{ prediction_result.fighter_b }}</h3>
-                    <div class="stat-value odds underdog">{{ prediction_result.stats_b.odds if prediction_result.stats_b.odds < 0 else '+' ~ prediction_result.stats_b.odds }}</div>
-                    <div class="stat-value">{{ prediction_result.fighter_b_data.record }}</div>
-                    <div class="stat-value">{{ prediction_result.stats_b.height_in // 12 }}'{{ prediction_result.stats_b.height_in % 12 }}"</div>
-                    <div class="stat-value">{{ prediction_result.stats_b.reach_in }}"</div>
-                    <div class="stat-value">{{ prediction_result.stats_b.age }}</div>
-                    <div class="stat-value">{{ prediction_result.stats_b.stance }}</div>
-                    <div class="stat-value highlight-stat">{{ "%.2f"|format(prediction_result.stats_b.sig_str_lpm) }}</div>
-                    <div class="stat-value highlight-stat">{{ "%.2f"|format(prediction_result.stats_b.sig_str_acc_pct) }}%</div>
-                    <div class="stat-value highlight-stat">{{ "%.2f"|format(prediction_result.stats_b.td_avg) }}</div>
-                    <div class="stat-value highlight-stat">{{ "%.2f"|format(prediction_result.stats_b.td_acc_pct) }}%</div>
-                    <div class="stat-value highlight-stat">{{ "%.2f"|format(prediction_result.stats_b.sub_avg) }}</div>
-                </div>
-            </div>
-            
-            {# 3. Deep Dive Insight (Optional - you can add custom analysis here later) #}
-            <div class="deep-dive">
-                The model comparison primarily focuses on the differences in **takedown offense/defense** and **significant strike accuracy** for the prediction outcome.
-            </div>
-
+    <!-- Error Message Display -->
+    {% if prediction_result.error %}
+        <div class="bg-red-900/50 p-4 rounded-lg border border-red-500 text-red-300 mb-8 font-semibold">
+            <i class="fas fa-exclamation-triangle mr-2"></i> {{ prediction_result.error }}
         </div>
     {% endif %}
 
-</main>
+    <!-- Prediction Outcome Bar -->
+    <div class="w-full bg-gray-700/50 rounded-full h-10 mb-8 relative shadow-lg overflow-hidden">
+        
+        <!-- A's Win Percentage -->
+        <div class="bg-green-500/80 h-full flex items-center justify-start rounded-l-full px-4 transition-all duration-1000 ease-out" 
+             style="width: {{ prediction_result.win_rate_a }}%;">
+            <span class="text-sm font-extrabold text-white whitespace-nowrap overflow-hidden">
+                {{ prediction_result.fighter_a }} ({{ prediction_result.win_rate_a }}%)
+            </span>
+        </div>
+        
+        <!-- B's Win Percentage -->
+        <div class="absolute inset-y-0 right-0 h-full flex items-center justify-end px-4 transition-all duration-1000 ease-out" 
+             style="width: {{ prediction_result.win_rate_b }}%;">
+            <span class="text-sm font-extrabold text-white whitespace-nowrap overflow-hidden">
+                ({{ prediction_result.win_rate_b }}%) {{ prediction_result.fighter_b }}
+            </span>
+        </div>
+    </div>
+    
+    <div class="text-center mb-10">
+        <p class="text-3xl font-bold text-white">
+            <span class="text-accent">{{ prediction_result.fighter_a }}</span> is predicted to win 
+            <span class="text-4xl font-extrabold text-accent">{{ prediction_result.win_rate_a }}%</span> of the time.
+        </p>
+    </div>
+
+    <!-- Tale of the Tape -->
+    <h3 class="text-2xl font-bold text-white mb-6 border-b border-gray-700 pb-2">
+        Tale of the Tape
+    </h3>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+        <!-- Fighter A Header -->
+        <div class="text-2xl font-extrabold text-accent">
+            {{ prediction_result.fighter_a }} ({{ prediction_result.fighter_a_data.record }})
+        </div>
+        <!-- Center Header -->
+        <div class="text-lg font-semibold text-gray-400">STATISTIC</div>
+        <!-- Fighter B Header -->
+        <div class="text-2xl font-extrabold text-accent">
+            {{ prediction_result.fighter_b }} ({{ prediction_result.fighter_b_data.record }})
+        </div>
+
+        {% set stats_list = [
+            ('Age', 'age', 'Age (Years)'),
+            ('Height', 'height_in', 'Height (Inches)'),
+            ('Reach', 'reach_in', 'Reach (Inches)'),
+            ('Strikes/Min', 'sig_str_lpm', 'Significant Strikes Landed/Min'),
+            ('Strike Acc', 'sig_str_acc_pct', 'Significant Strike Accuracy (%)'),
+            ('TD Avg', 'td_avg', 'Takedowns Landed/15 Min'),
+            ('TD Acc', 'td_acc_pct', 'Takedown Accuracy (%)'),
+            ('Sub Avg', 'sub_avg', 'Submissions Attempted/15 Min'),
+            ('KO Win %', 'ko_win_pct', 'KO/TKO Win Percentage'),
+            ('Sub Win %', 'sub_win_pct', 'Submission Win Percentage')
+        ] %}
+
+        {% for key, attr, label in stats_list %}
+        <div class="text-xl font-bold text-white p-2 bg-gray-800/50 rounded-l-lg">{{ "%0.1f" | format(prediction_result.stats_a[attr]) }}</div>
+        <div class="text-sm font-medium text-gray-400 p-2 flex items-center justify-center bg-gray-900 border-l border-r border-gray-700">{{ label }}</div>
+        <div class="text-xl font-bold text-white p-2 bg-gray-800/50 rounded-r-lg">{{ "%0.1f" | format(prediction_result.stats_b[attr]) }}</div>
+        {% endfor %}
+    </div>
+
+{% elif prediction_result and prediction_result.error %}
+    <!-- Display error if one occurred outside of the stats check -->
+    <div class="bg-red-900/50 p-6 rounded-lg border border-red-500 text-red-300 font-semibold mt-8">
+        <i class="fas fa-exclamation-triangle mr-2"></i> {{ prediction_result.error }}
+        <p class="mt-2 text-sm">Please ensure fighter names are spelled correctly.</p>
+    </div>
+{% endif %}
+
 {% endblock %}
