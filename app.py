@@ -188,10 +188,15 @@ def prediction_page():
             'fighter_b_data': get_fighter_data(f2_name), # For display (record)
         }
         
-        if not f1_data or not f2_data:
-            # This error handling now catches the issue that caused the 0.0% result
-            prediction_result['error'] = "One or both fighters not found in the database. Please check spelling."
-        else:
+        if not f1_data:
+            app.logger.warning(f"Fighter A ('{f1_name}') not found in DB.")
+            prediction_result['error'] = f"Fighter A ('{f1_name}') not found in the database. Please check spelling."
+        if not f2_data:
+            app.logger.warning(f"Fighter B ('{f2_name}') not found in DB.")
+            prediction_result['error'] = f"Fighter B ('{f2_name}') not found in the database. Please check spelling."
+            
+        if f1_data and f2_data:
+            app.logger.info(f"Successfully retrieved data for {f1_name} and {f2_name}.")
             try:
                 # 1. Get the feature differential vector
                 X = get_prediction_data(f1_data, f2_data)
