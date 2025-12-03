@@ -14,18 +14,18 @@ DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'fighters.db'
 # A higher absolute value means the feature difference has a greater impact on the prediction.
 # The order MUST match the feature vector created in get_prediction_data.
 CUSTOM_WEIGHTS = {
-    'intercept': 0.1,  # Bias term
+    'intercept': 0.1, # Bias term
     'weights': np.array([
-        -0.01,  # age_diff (Older is slightly worse)
-         0.02,  # height_diff
-         0.03,  # reach_diff
-         0.15,  # sig_str_lpm_diff
-         0.20,  # sig_str_acc_diff 
-         0.35,  # td_avg_diff 
-         0.60,  # td_acc_diff (Very high importance for grappling success)
-         0.30,  # sub_avg_diff
-         0.45,  # ko_win_pct_diff (High importance for power/striking style)
-         0.40   # sub_win_pct_diff (High importance for submission style)
+        -0.01, # age_diff (Older is slightly worse)
+        0.02, # height_diff
+        0.03, # reach_diff
+        0.15, # sig_str_lpm_diff
+        0.20, # sig_str_acc_diff 
+        0.35, # td_avg_diff 
+        0.60, # td_acc_diff (Very high importance for grappling success)
+        0.30, # sub_avg_diff
+        0.45, # ko_win_pct_diff (High importance for power/striking style)
+        0.40 # sub_win_pct_diff (High importance for submission style)
     ])
 }
 
@@ -156,7 +156,7 @@ def fighters_page():
 
 @app.route('/upcoming')
 def upcoming_page():
-    # The actual data for the fights is hard-coded in the upcoming.html template for simplicity
+    # The actual data for the fights is hard-coded in the upcoming.html template
     return render_template('upcoming.html')
 
 
@@ -189,6 +189,7 @@ def prediction_page():
         }
         
         if not f1_data or not f2_data:
+            # This error handling now catches the issue that caused the 0.0% result
             prediction_result['error'] = "One or both fighters not found in the database. Please check spelling."
         else:
             try:
@@ -216,7 +217,7 @@ def prediction_page():
 if __name__ == '__main__':
     # Ensure the database exists and is populated before running the app
     if not os.path.exists(DB_PATH) or os.path.getsize(DB_PATH) < 100:
-         print("WARNING: Database is missing or empty. Please run python db.py first.")
+        print("WARNING: Database is missing or empty. Please run python db.py first.")
     
     app.run(debug=True)
     

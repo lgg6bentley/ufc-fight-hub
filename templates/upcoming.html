@@ -4,32 +4,93 @@
 
 {% block content %}
 <h2 class="text-4xl font-extrabold text-white mb-8 border-b border-accent pb-2">
-    Upcoming Fights
+    Upcoming Fights Card
 </h2>
 
 {% set upcoming_fights = [
-    ('Grappler A', 'Striker B', 'Main Event - UFC 300'),
-    ('W-R Fighter C', 'Journeyman D', 'Co-Main Event'),
-    ('Striker B', 'Grappler A', 'Rematch')
+    {
+        'title': 'UFC Bantamweight Championship',
+        'f1': 'Merab Dvalishvili', 'f1_record': '21-4', 'f1_rank': '#1', 'f1_weight_class': 'UFC BantamW',
+        'f2': 'Petr Yan', 'f2_record': '19-5', 'f2_rank': '#7', 'f2_weight_class': 'UFC BantamW',
+        'card_position': 'Main Event', 'weight': '135', 'rounds': '5 x 5'
+    },
+    {
+        'title': 'UFC Flyweight Championship',
+        'f1': 'Alexandre Pantoja', 'f1_record': '30-5', 'f1_rank': '#1', 'f1_weight_class': 'UFC FlyW',
+        'f2': 'Joshua Van', 'f2_record': '15-2', 'f2_rank': '#4', 'f2_weight_class': 'UFC FlyW',
+        'card_position': 'Co-Main', 'weight': '125', 'rounds': '5 x 5'
+    },
+    {
+        'title': 'Flyweight Bout',
+        'f1': 'Brandon Moreno', 'f1_record': '23-8-2', 'f1_rank': '#3', 'f1_weight_class': 'UFC FlyW',
+        'f2': 'Tatsuro Taira', 'f2_record': '17-1', 'f2_rank': '#6', 'f2_weight_class': 'UFC FlyW',
+        'card_position': 'Main Card', 'weight': '125', 'rounds': '3 x 5'
+    },
+    {
+        'title': 'Bantamweight Bout',
+        'f1': 'Henry Cejudo', 'f1_record': '16-5', 'f1_rank': '#9', 'f1_weight_class': 'UFC BantamW',
+        'f2': 'Payton Talbott', 'f2_record': '10-1', 'f2_rank': '#25', 'f2_weight_class': 'UFC BantamW',
+        'card_position': 'Main Card', 'weight': '135', 'rounds': '3 x 5'
+    },
+    {
+        'title': 'Light Heavyweight Bout',
+        'f1': 'Jan Błachowicz', 'f1_record': '29-11-1', 'f1_rank': '#6', 'f1_weight_class': 'UFC Light HW',
+        'f2': 'Bogdan Guskov', 'f2_record': '18-3', 'f2_rank': '#12', 'f2_weight_class': 'UFC Light HW',
+        'card_position': 'Main Card', 'weight': '205', 'rounds': '3 x 5'
+    }
 ] %}
 
 <div class="space-y-6">
-    {% for f1, f2, event in upcoming_fights %}
-    <div class="bg-[color:var(--card-bg)] p-6 rounded-xl shadow-lg flex flex-col md:flex-row justify-between items-center transition duration-300 hover:border-l-4 border-accent">
-        <div class="text-center md:text-left mb-4 md:mb-0">
-            <p class="text-sm font-medium text-gray-400 mb-1">{{ event }}</p>
-            <h3 class="text-3xl font-extrabold text-white">
-                {{ f1 }} <span class="text-accent text-lg mx-3">vs</span> {{ f2 }}
-            </h3>
-        </div>
+    {% for fight in upcoming_fights %}
+    <div class="bg-[color:var(--card-bg)] p-6 rounded-xl shadow-2xl flex flex-col transition duration-300 hover:border-l-4 border-accent">
         
-        <a href="{{ url_for('prediction_page', f1=f1, f2=f2) }}" 
-           class="py-2 px-6 text-sm font-bold text-gray-900 bg-accent rounded-full hover:bg-opacity-90 transition duration-150 ease-in-out">
-            <i class="fas fa-chart-line mr-2"></i> Simulate Now
-        </a>
+        <!-- Fight Title and Metadata -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 border-b border-gray-700 pb-3">
+            <h3 class="text-xl font-extrabold text-white">
+                <i class="fas fa-bullhorn text-accent mr-2"></i> {{ fight.title }}
+            </h3>
+            <div class="flex items-center space-x-4 mt-2 sm:mt-0 text-sm font-semibold text-gray-400">
+                <span class="bg-gray-700/50 px-3 py-1 rounded-full text-xs text-yellow-400">{{ fight.card_position }}</span>
+                <span>{{ fight.weight }} lbs</span>
+                <span>{{ fight.rounds }}</span>
+            </div>
+        </div>
+
+        <!-- Fighter Matchup -->
+        <div class="grid grid-cols-1 sm:grid-cols-5 gap-4 items-center text-center">
+            
+            <!-- Fighter A -->
+            <div class="col-span-2 flex flex-col items-center sm:items-start p-2 rounded-lg bg-gray-700/30">
+                <p class="text-3xl font-extrabold text-white truncate w-full">{{ fight.f1 }}</p>
+                <div class="flex space-x-2 text-sm mt-1">
+                    <span class="text-accent font-mono">{{ fight.f1_record }}</span>
+                    <span class="text-red-400 font-bold">{{ fight.f1_rank }}</span>
+                    <span class="text-gray-400 hidden sm:block">{{ fight.f1_weight_class }}</span>
+                </div>
+            </div>
+
+            <!-- VS Button/Link -->
+            <div class="col-span-1 flex justify-center">
+                <a href="{{ url_for('prediction_page', f1=fight.f1, f2=fight.f2) }}" 
+                   class="p-2 px-4 text-xs font-bold text-gray-900 bg-accent rounded-full hover:bg-opacity-90 transition duration-150 ease-in-out shadow-lg">
+                    PREDICT
+                </a>
+            </div>
+
+            <!-- Fighter B -->
+            <div class="col-span-2 flex flex-col items-center sm:items-end p-2 rounded-lg bg-gray-700/30">
+                <p class="text-3xl font-extrabold text-white truncate w-full">{{ fight.f2 }}</p>
+                <div class="flex space-x-2 text-sm mt-1">
+                    <span class="text-accent font-mono">{{ fight.f2_record }}</span>
+                    <span class="text-red-400 font-bold">{{ fight.f2_rank }}</span>
+                    <span class="text-gray-400 hidden sm:block">{{ fight.f2_weight_class }}</span>
+                </div>
+            </div>
+
+        </div>
     </div>
     {% endfor %}
 </div>
 
-<p class="mt-8 text-gray-500 text-sm">Note: Sample fights are hardcoded for demonstration purposes.</p>
+<p class="mt-8 text-gray-500 text-sm">Click 'PREDICT' to run a simulation for any matchup on the card.</p>
 {% endblock %}
