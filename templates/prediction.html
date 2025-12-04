@@ -4,124 +4,244 @@
 
 {% block content %}
 
-<!-- Prediction Form -->
+<!-- Custom Styles for the Cinematic Reveal (Specific to this block) -->
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+    /* --- PREDICTION CINEMATIC STYLES --- */
+    #prediction-cinematic {
+        display: none; /* Controlled by JS to appear only when needed */
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: fixed; /* Fixed position to cover the screen */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(13, 17, 23, 0.95); /* Dark semi-transparent overlay */
+        z-index: 100; 
+        opacity: 0;
+        transition: opacity 0.5s;
+    }
+
+    #cinematic-panel {
+        padding: 4rem;
+        border-radius: 1rem;
+        background: #161b22;
+        box-shadow: 0 4px 60px rgba(220, 38, 38, 0.3); /* Red shadow for theme */
+    }
+
+    .result-flash {
+        font-family: 'Playfair Display', serif;
+        font-size: 3rem;
+        font-weight: 900;
+        color: #ef4444; 
+        text-shadow: 0 0 10px #dc2626, 0 0 20px #dc2626;
+        animation: flash 0.1s alternate infinite;
+    }
+
+    @keyframes flash {
+        0% { opacity: 0.8; transform: scale(1.0); }
+        100% { opacity: 1.0; transform: scale(1.05); }
+    }
+
+    #results-content-wrapper {
+        opacity: 0; /* Hidden initially, revealed after animation */
+        transition: opacity 1s ease-in-out;
+    }
+</style>
+
+
 <div class="bg-[color:var(--card-bg)] p-6 rounded-2xl shadow-xl mb-12">
     <h2 class="text-3xl font-bold text-white mb-6 border-b border-gray-700 pb-3">
         Fight Prediction Simulator
     </h2>
     <form method="POST" action="{{ url_for('prediction_page') }}" class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
         
-        <!-- Fighter A Input -->
         <div class="col-span-1">
             <label for="fighter_a_name" class="block text-sm font-medium text-gray-300 mb-2">Fighter A Name</label>
             <input type="text" id="fighter_a_name" name="fighter_a_name" 
-                   value="{{ prediction_result.fighter_a if prediction_result else '' }}"
-                   required 
-                   class="w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:ring-accent focus:border-accent transition duration-150"
-                   placeholder="e.g., Grappler A">
+                    value="{{ prediction_result.fighter_a if prediction_result else '' }}"
+                    required 
+                    class="w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:ring-accent focus:border-accent transition duration-150"
+                    placeholder="e.g., Grappler A">
         </div>
 
-        <!-- VS Label -->
         <div class="col-span-1 flex items-center justify-center text-center">
             <span class="text-2xl font-extrabold text-red-500">VS</span>
         </div>
         
-        <!-- Fighter B Input -->
         <div class="col-span-1">
             <label for="fighter_b_name" class="block text-sm font-medium text-gray-300 mb-2">Fighter B Name</label>
             <input type="text" id="fighter_b_name" name="fighter_b_name" 
-                   value="{{ prediction_result.fighter_b if prediction_result else '' }}"
-                   required 
-                   class="w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:ring-accent focus:border-accent transition duration-150"
-                   placeholder="e.g., Striker B">
+                    value="{{ prediction_result.fighter_b if prediction_result else '' }}"
+                    required 
+                    class="w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:ring-accent focus:border-accent transition duration-150"
+                    placeholder="e.g., Striker B">
         </div>
 
-        <!-- Submit Button (Full Width on Mobile) -->
         <div class="col-span-1 md:col-span-3">
             <button type="submit" 
-                    class="w-full py-3 px-6 text-lg font-bold text-gray-900 bg-accent rounded-lg hover:bg-opacity-90 transition duration-150 ease-in-out">
+                      class="w-full py-3 px-6 text-lg font-bold text-gray-900 bg-accent rounded-lg hover:bg-opacity-90 transition duration-150 ease-in-out">
                 <i class="fas fa-bolt mr-2"></i> RUN SIMULATION
             </button>
         </div>
     </form>
 </div>
 
-<!-- Prediction Results -->
 {% if prediction_result and prediction_result.stats_a and prediction_result.stats_b %}
 
-    <!-- Error Message Display -->
-    {% if prediction_result.error %}
-        <div class="bg-red-900/50 p-4 rounded-lg border border-red-500 text-red-300 mb-8 font-semibold">
-            <i class="fas fa-exclamation-triangle mr-2"></i> {{ prediction_result.error }}
-        </div>
-    {% endif %}
-
-    <!-- Prediction Outcome Bar -->
-    <div class="w-full bg-gray-700/50 rounded-full h-10 mb-8 relative shadow-lg overflow-hidden">
-        
-        <!-- A's Win Percentage -->
-        <div class="bg-green-500/80 h-full flex items-center justify-start rounded-l-full px-4 transition-all duration-1000 ease-out" 
-             style="width: {{ prediction_result.win_rate_a }}%;">
-            <span class="text-sm font-extrabold text-white whitespace-nowrap overflow-hidden">
-                {{ prediction_result.fighter_a }} ({{ prediction_result.win_rate_a }}%)
-            </span>
-        </div>
-        
-        <!-- B's Win Percentage -->
-        <div class="absolute inset-y-0 right-0 h-full flex items-center justify-end px-4 transition-all duration-1000 ease-out" 
-             style="width: {{ prediction_result.win_rate_b }}%;">
-            <span class="text-sm font-extrabold text-white whitespace-nowrap overflow-hidden">
-                ({{ prediction_result.win_rate_b }}%) {{ prediction_result.fighter_b }}
-            </span>
+    <!-- 1. CINEMATIC FLASH OVERLAY (Always present when results are calculated) -->
+    <div id="prediction-cinematic">
+        <div id="cinematic-panel" class="text-center">
+            <p class="text-xl text-gray-400 mb-6 uppercase">DETERMINING METHOD OF VICTORY</p>
+            <div id="method-flash-container" class="result-flash">
+                <p id="method-flash-text">KO</p>
+            </div>
+            <p class="text-xs text-gray-500 mt-6">Decoding AI Fight Outcome...</p>
         </div>
     </div>
     
-    <div class="text-center mb-10">
-        <p class="text-3xl font-bold text-white">
-            <span class="text-accent">{{ prediction_result.fighter_a }}</span> is predicted to win 
-            <span class="text-4xl font-extrabold text-accent">{{ prediction_result.win_rate_a }}%</span> of the time.
-        </p>
-    </div>
+    <!-- 2. FINAL RESULTS CONTENT (Initially hidden by opacity and covered by overlay) -->
+    <div id="results-content-wrapper">
 
-    <!-- Tale of the Tape -->
-    <h3 class="text-2xl font-bold text-white mb-6 border-b border-gray-700 pb-2">
-        Tale of the Tape
-    </h3>
+        {% if prediction_result.error %}
+            <div class="bg-red-900/50 p-4 rounded-lg border border-red-500 text-red-300 mb-8 font-semibold">
+                <i class="fas fa-exclamation-triangle mr-2"></i> {{ prediction_result.error }}
+            </div>
+        {% endif %}
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-        <!-- Fighter A Header -->
-        <div class="text-2xl font-extrabold text-accent">
-            {{ prediction_result.fighter_a }} ({{ prediction_result.fighter_a_data.record }})
+        <div class="w-full bg-gray-700/50 rounded-full h-10 mb-8 relative shadow-lg overflow-hidden">
+            
+            <div class="bg-green-500/80 h-full flex items-center justify-start rounded-l-full px-4 transition-all duration-1000 ease-out" 
+                  style="width: {{ prediction_result.win_rate_a }}%;">
+                <span class="text-sm font-extrabold text-white whitespace-nowrap overflow-hidden">
+                    {{ prediction_result.fighter_a }} ({{ prediction_result.win_rate_a }}%)
+                </span>
+            </div>
+            
+            <div class="absolute inset-y-0 right-0 h-full flex items-center justify-end px-4 transition-all duration-1000 ease-out" 
+                  style="width: {{ prediction_result.win_rate_b }}%;">
+                <span class="text-sm font-extrabold text-white whitespace-nowrap overflow-hidden">
+                    ({{ prediction_result.win_rate_b }}%) {{ prediction_result.fighter_b }}
+                </span>
+            </div>
         </div>
-        <!-- Center Header -->
-        <div class="text-lg font-semibold text-gray-400">STATISTIC</div>
-        <!-- Fighter B Header -->
-        <div class="text-2xl font-extrabold text-accent">
-            {{ prediction_result.fighter_b }} ({{ prediction_result.fighter_b_data.record }})
+        
+        <div class="text-center mb-10">
+            <p class="text-3xl font-bold text-white">
+                <span class="text-accent">{{ prediction_result.fighter_a }}</span> is predicted to win 
+                <span class="text-4xl font-extrabold text-accent">{{ prediction_result.win_rate_a }}%</span> of the time.
+            </p>
         </div>
 
-        {% set stats_list = [
-            ('Age', 'age', 'Age (Years)'),
-            ('Height', 'height_in', 'Height (Inches)'),
-            ('Reach', 'reach_in', 'Reach (Inches)'),
-            ('Strikes/Min', 'sig_str_lpm', 'Significant Strikes Landed/Min'),
-            ('Strike Acc', 'sig_str_acc_pct', 'Significant Strike Accuracy (%)'),
-            ('TD Avg', 'td_avg', 'Takedowns Landed/15 Min'),
-            ('TD Acc', 'td_acc_pct', 'Takedown Accuracy (%)'),
-            ('Sub Avg', 'sub_avg', 'Submissions Attempted/15 Min'),
-            ('KO Win %', 'ko_win_pct', 'KO/TKO Win Percentage'),
-            ('Sub Win %', 'sub_win_pct', 'Submission Win Percentage')
-        ] %}
+        <h3 class="text-2xl font-bold text-white mb-6 border-b border-gray-700 pb-2">
+            Tale of the Tape
+        </h3>
 
-        {% for key, attr, label in stats_list %}
-        <div class="text-xl font-bold text-white p-2 bg-gray-800/50 rounded-l-lg">{{ "%0.1f" | format(prediction_result.stats_a[attr]) }}</div>
-        <div class="text-sm font-medium text-gray-400 p-2 flex items-center justify-center bg-gray-900 border-l border-r border-gray-700">{{ label }}</div>
-        <div class="text-xl font-bold text-white p-2 bg-gray-800/50 rounded-r-lg">{{ "%0.1f" | format(prediction_result.stats_b[attr]) }}</div>
-        {% endfor %}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+            <div class="text-2xl font-extrabold text-accent">
+                {{ prediction_result.fighter_a }} ({{ prediction_result.stats_a.record }}) 
+            </div>
+            <div class="text-lg font-semibold text-gray-400">STATISTIC</div>
+            <div class="text-2xl font-extrabold text-accent">
+                {{ prediction_result.fighter_b }} ({{ prediction_result.stats_b.record }})
+            </div>
+
+            {% set stats_list = [
+                ('Age', 'age', 'Age (Years)'),
+                ('Height', 'height_in', 'Height (Inches)'),
+                ('Reach', 'reach_in', 'Reach (Inches)'),
+                ('Strikes/Min', 'sig_str_lpm', 'Significant Strikes Landed/Min'),
+                ('Strike Acc', 'sig_str_acc_pct', 'Significant Strike Accuracy (%)'),
+                ('TD Avg', 'td_avg', 'Takedowns Landed/15 Min'),
+                ('TD Acc', 'td_acc_pct', 'Takedown Accuracy (%)'),
+                ('Sub Avg', 'sub_avg', 'Submissions Attempted/15 Min'),
+                ('KO Win %', 'ko_win_pct', 'KO/TKO Win Percentage'),
+                ('Sub Win %', 'sub_win_pct', 'Submission Win Percentage')
+            ] %}
+
+            {% for key, attr, label in stats_list %}
+            <div class="text-xl font-bold text-white p-2 bg-gray-800/50 rounded-l-lg">{{ "%0.1f" | format(prediction_result.stats_a[attr]) }}</div>
+            <div class="text-sm font-medium text-gray-400 p-2 flex items-center justify-center bg-gray-900 border-l border-r border-gray-700">{{ label }}</div>
+            <div class="text-xl font-bold text-white p-2 bg-gray-800/50 rounded-r-lg">{{ "%0.1f" | format(prediction_result.stats_b[attr]) }}</div>
+            {% endfor %}
+        </div>
     </div>
+    <!-- END RESULTS CONTENT -->
 
+    <!-- 3. JAVASCRIPT FOR ANIMATION -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cinematic = document.getElementById('prediction-cinematic');
+            const resultsWrapper = document.getElementById('results-content-wrapper');
+            const methodFlashText = document.getElementById('method-flash-text');
+            const flashContainer = document.getElementById('method-flash-container');
+            
+            // Only run the animation if the necessary elements exist (i.e., prediction_result is available)
+            if (cinematic && resultsWrapper && methodFlashText) {
+                
+                const CINEMATIC_FLASH_DURATION = 1500; // 1.5 seconds of method flashing
+                const METHODS = ['KNOCKOUT (KO)', 'SUBMISSION (SUB)', 'DECISION (DEC)'];
+                let flashInterval = null;
+
+                // Make cinematic visible and start fade in
+                cinematic.style.display = 'flex';
+                setTimeout(() => {
+                    cinematic.style.opacity = '1';
+                }, 10); // Small delay for CSS transition to work
+
+                /**
+                 * Starts the rapid flashing cycle between KO, SUB, and DEC.
+                 */
+                function startMethodFlash() {
+                    let index = 0;
+                    // Set a rapid interval (100ms) to change the text
+                    flashInterval = setInterval(() => {
+                        methodFlashText.textContent = METHODS[index];
+                        index = (index + 1) % METHODS.length;
+                    }, 100);
+
+                    // Stop the flash and transition after the duration
+                    setTimeout(() => {
+                        clearInterval(flashInterval);
+                        
+                        // Stop the CSS flash animation on the container
+                        flashContainer.style.animation = 'none';
+
+                        // Transition to "PREDICTION LOCK" for a dramatic pause
+                        methodFlashText.textContent = "PREDICTION LOCK";
+                        flashContainer.style.color = '#10b981'; /* Green for lock */
+                        flashContainer.style.textShadow = '0 0 10px #10b981, 0 0 20px #10b981';
+
+                        // Wait a brief moment before fading out the cinematic
+                        setTimeout(transitionToResults, 700); 
+
+                    }, CINEMATIC_FLASH_DURATION);
+                }
+
+                /**
+                 * Fades out the cinematic and reveals the final prediction content.
+                 */
+                function transitionToResults() {
+                    // Start fading out the cinematic overlay
+                    cinematic.style.opacity = '0';
+                    // Start fading in the results content underneath
+                    resultsWrapper.style.opacity = '1';
+                    
+                    // Remove the cinematic element after it has faded out
+                    setTimeout(() => {
+                        cinematic.remove();
+                    }, 1000); 
+                }
+
+                // Start the flash animation after the cinematic overlay has faded in
+                setTimeout(startMethodFlash, 500);
+            }
+        });
+    </script>
 {% elif prediction_result and prediction_result.error %}
-    <!-- Display error if one occurred outside of the stats check -->
     <div class="bg-red-900/50 p-6 rounded-lg border border-red-500 text-red-300 font-semibold mt-8">
         <i class="fas fa-exclamation-triangle mr-2"></i> {{ prediction_result.error }}
         <p class="mt-2 text-sm">Please ensure fighter names are spelled correctly.</p>
