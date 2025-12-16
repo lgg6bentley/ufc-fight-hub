@@ -14,7 +14,7 @@ COLUMNS_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'model_c
 CORRECTED_FEATURES = [
     'record_wins_diff', 'record_losses_diff', 'height_in_diff', 'age_diff', 
     'reach_in_diff', 'sig_str_lpm_diff', 'sig_str_acc_pct_diff', 
-    'td_avg_diff', 'td_acc_pct_pct_diff', 'sub_avg_diff', 'stance_diff_same'
+    'td_avg_diff', 'td_acc_pct_diff', 'sub_avg_diff', 'stance_diff_same'
 ]
 
 def create_expert_model_random_forest():

@@ -9,34 +9,46 @@
 
 {% set upcoming_fights = [
     {
-        'title': 'UFC Bantamweight Championship',
-        'f1': 'Merab Dvalishvili', 'f1_record': '21-4', 'f1_rank': '#1', 'f1_weight_class': 'UFC BantamW',
-        'f2': 'Petr Yan', 'f2_record': '19-5', 'f2_rank': '#7', 'f2_weight_class': 'UFC BantamW',
-        'card_position': 'Main Event', 'weight': '135', 'rounds': '5 x 5'
+        'title': 'UFC Lightweight Bout',
+        'f1': 'Justin Gaethje', 'f1_record': '26-5', 'f1_rank': '#3', 'f1_weight_class': 'UFC LW',
+        'f2': 'Paddy Pimblett', 'f2_record': '23-3', 'f2_rank': '#15', 'f2_weight_class': 'UFC LW',
+        'card_position': 'Main Event', 'weight': '156', 'rounds': '5 x 5'
     },
     {
-        'title': 'UFC Flyweight Championship',
-        'f1': 'Alexandre Pantoja', 'f1_record': '30-5', 'f1_rank': '#1', 'f1_weight_class': 'UFC FlyW',
-        'f2': 'Joshua Van', 'f2_record': '15-2', 'f2_rank': '#4', 'f2_weight_class': 'UFC FlyW',
-        'card_position': 'Co-Main', 'weight': '125', 'rounds': '5 x 5'
-    },
-    {
-        'title': 'Flyweight Bout',
-        'f1': 'Brandon Moreno', 'f1_record': '23-8-2', 'f1_rank': '#3', 'f1_weight_class': 'UFC FlyW',
-        'f2': 'Tatsuro Taira', 'f2_record': '17-1', 'f2_rank': '#6', 'f2_weight_class': 'UFC FlyW',
-        'card_position': 'Main Card', 'weight': '125', 'rounds': '3 x 5'
+        'title': 'UFC Women\'s Bantamweight Championship',
+        'f1': 'Kayla Harrison', 'f1_record': '19-1', 'f1_rank': 'Champ', 'f1_weight_class': 'UFC WBW',
+        'f2': 'Amanda Nunes', 'f2_record': '23-5', 'f2_rank': '#1', 'f2_weight_class': 'UFC WBW',
+        'card_position': 'Co-Main', 'weight': '135', 'rounds': '5 x 5'
     },
     {
         'title': 'Bantamweight Bout',
-        'f1': 'Henry Cejudo', 'f1_record': '16-5', 'f1_rank': '#9', 'f1_weight_class': 'UFC BantamW',
-        'f2': 'Payton Talbott', 'f2_record': '10-1', 'f2_rank': '#25', 'f2_weight_class': 'UFC BantamW',
+        'f1': 'Sean O\'Malley', 'f1_record': '18-3', 'f1_rank': 'Champ', 'f1_weight_class': 'UFC BW',
+        'f2': 'Song Yadong', 'f2_record': '22-8-1', 'f2_rank': '#7', 'f2_weight_class': 'UFC BW',
         'card_position': 'Main Card', 'weight': '135', 'rounds': '3 x 5'
     },
     {
-        'title': 'Light Heavyweight Bout',
-        'f1': 'Jan Blachowicz', 'f1_record': '29-11-1', 'f1_rank': '#6', 'f1_weight_class': 'UFC Light HW',
-        'f2': 'Bogdan Guskov', 'f2_record': '18-3', 'f2_rank': '#12', 'f2_weight_class': 'UFC Light HW',
-        'card_position': 'Main Card', 'weight': '205', 'rounds': '3 x 5'
+        'title': 'Heavyweight Bout',
+        'f1': 'Waldo Cortes-Acosta', 'f1_record': '16-2', 'f1_rank': '#12', 'f1_weight_class': 'UFC HW',
+        'f2': 'Derrick Lewis', 'f2_record': '29-12', 'f2_rank': '#6', 'f2_weight_class': 'UFC HW',
+        'card_position': 'Main Card', 'weight': '265', 'rounds': '3 x 5'
+    },
+    {
+        'title': 'Featherweight Bout',
+        'f1': 'Arnold Allen', 'f1_record': '20-3', 'f1_rank': '#5', 'f1_weight_class': 'UFC FW',
+        'f2': 'Joanderson Silva', 'f2_record': '16-3', 'f2_rank': '#14', 'f2_weight_class': 'UFC FW',
+        'card_position': 'Main Card', 'weight': '145', 'rounds': '3 x 5'
+    },
+    {
+        'title': 'Women\'s Flyweight Bout',
+        'f1': 'Natalia Silva', 'f1_record': '19-5-1', 'f1_rank': '#8', 'f1_weight_class': 'UFC WFly',
+        'f2': 'Rose Namajunas', 'f2_record': '15-7', 'f2_rank': '#4', 'f2_weight_class': 'UFC WFly',
+        'card_position': 'Prelims', 'weight': '125', 'rounds': '3 x 5'
+    },
+    {
+        'title': 'Bantamweight Bout',
+        'f1': 'Umar Nurmagomedov', 'f1_record': '19-1', 'f1_rank': '#10', 'f1_weight_class': 'UFC BW',
+        'f2': 'Deiveson Figueiredo', 'f2_record': '25-5-1', 'f2_rank': '#6', 'f2_weight_class': 'UFC BW',
+        'card_position': 'Prelims', 'weight': '135', 'rounds': '3 x 5'
     }
 ] %}
 
@@ -94,3 +106,4 @@
 
 <p class="mt-8 text-gray-500 text-sm">Click 'PREDICT' to run a simulation for any matchup on the card.</p>
 {% endblock %}
+

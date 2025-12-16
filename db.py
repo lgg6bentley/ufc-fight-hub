@@ -5,38 +5,43 @@ DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'fighters.db'
 
 # --- CONFIGURATION FOR PROVIDED FIGHT DATA ---
 
-# IMPORTANT: Names are standardized to ASCII ('Blachowicz' instead of 'Błachowicz') 
-# to ensure users can easily type them into the web form.
 FIGHTER_STATS_DATA = [
-    # Fighter Name, Wins, Losses, Height (in), Age, Reach (in), SSLPM, SSACC%, TDAVG, TDACC%, SUBAVG, Stance, Country, KO_W_PCT, SUB_W_PCT
-    ('Merab Dvalishvili', 21, 4, 66, 34, 68, 4.33, 59.45, 6.40, 37.86, 0.27, 'Orthodox', 'Georgia', 14.2, 9.5),
-    ('Petr Yan', 19, 5, 67, 32, 67, 5.12, 60.58, 1.58, 48.21, 0.12, 'Switch', 'Russia', 21.0, 5.3),
-    ('Alexandre Pantoja', 30, 5, 65, 35, 67.5, 4.36, 54.61, 2.80, 47.62, 0.98, 'Orthodox', 'Brazil', 16.7, 33.3),
-    ('Joshua Van', 15, 2, 65, 24, 65, 8.86, 61.39, 0.85, 63.64, 0.00, 'Orthodox', 'Myanmar', 60.0, 6.7),
-    ('Brandon Moreno', 23, 8, 67, 31, 70, 3.96, 49.52, 1.51, 44.29, 0.39, 'Orthodox', 'Mexico', 17.4, 21.7),
-    ('Tatsuro Taira', 17, 1, 67, 25, 70, 2.87, 67.41, 3.21, 48.72, 1.69, 'Orthodox', 'Japan', 17.6, 58.8),
-    ('Henry Cejudo', 16, 5, 64, 38, 64, 3.82, 54.81, 1.84, 31.25, 0.15, 'Orthodox', 'USA', 31.2, 6.2),
-    ('Payton Talbott', 10, 1, 70, 27, 70.5, 6.05, 59.27, 0.24, 25.00, 0.24, 'Switch', 'USA', 80.0, 10.0),
-    # NAME CHANGE: 'Jan Błachowicz' -> 'Jan Blachowicz' for easier user input
-    ('Jan Blachowicz', 29, 11, 74, 42, 78, 3.44, 57.61, 1.03, 48.72, 0.33, 'Orthodox', 'Poland', 34.5, 27.6),
-    ('Bogdan Guskov', 18, 3, 75, 33, 76, 4.17, 63.10, 0.00, 0.00, 1.05, 'Orthodox', 'Uzbekistan', 55.5, 38.8),
+    # Fighter Name, Wins, Losses, Height (in), Age, Reach (in),
+    # SSLPM, SSACC%, TDAVG, TDACC%, SUBAVG, Stance, Country, KO_W_PCT, SUB_W_PCT
+
+    ('Justin Gaethje', 26, 5, 71, 37, 70, 6.59, 59.63, 0.10, 14.29, 0.00, 'Orthodox', 'USA', 70.0, 5.0),
+    ('Paddy Pimblett', 23, 3, 70, 30, 73, 5.19, 60.18, 0.96, 28.57, 1.68, 'Orthodox', 'England', 40.0, 30.0),
+
+    ('Kayla Harrison', 19, 1, 68, 34, 69, 4.50, 55.0, 3.20, 50.0, 1.50, 'Orthodox', 'USA', 25.0, 45.0),
+    ('Amanda Nunes', 23, 5, 68, 37, 69, 4.40, 51.0, 1.80, 40.0, 0.80, 'Orthodox', 'Brazil', 60.0, 20.0),
+
+    ('Sean O\'Malley', 18, 3, 71, 31, 72, 7.00, 61.0, 0.50, 20.0, 0.20, 'Orthodox', 'USA', 75.0, 10.0),
+    ('Song Yadong', 22, 8, 68, 28, 71, 4.80, 57.0, 0.80, 35.0, 0.40, 'Orthodox', 'China', 55.0, 15.0),
+
+    ('Waldo Cortes-Acosta', 16, 2, 75, 31, 78, 3.50, 52.0, 0.20, 15.0, 0.10, 'Orthodox', 'Dominican Republic', 50.0, 10.0),
+    ('Derrick Lewis', 29, 12, 75, 40, 79, 2.60, 48.0, 0.10, 10.0, 0.00, 'Orthodox', 'USA', 80.0, 5.0),
+
+    ('Arnold Allen', 20, 3, 70, 31, 72, 3.90, 50.0, 1.20, 30.0, 0.60, 'Orthodox', 'England', 40.0, 25.0),
+    ('Joanderson Silva', 16, 3, 70, 28, 72, 4.20, 53.0, 1.00, 28.0, 0.50, 'Orthodox', 'Brazil', 45.0, 20.0),
+
+    ('Natalia Silva', 19, 5, 65, 28, 67, 4.10, 54.0, 1.50, 35.0, 1.20, 'Orthodox', 'Brazil', 35.0, 40.0),
+    ('Rose Namajunas', 15, 7, 65, 33, 65, 3.80, 49.0, 1.00, 30.0, 1.00, 'Orthodox', 'USA', 30.0, 35.0),
+
+    ('Umar Nurmagomedov', 19, 1, 70, 29, 69, 4.00, 56.0, 3.00, 55.0, 1.50, 'Orthodox', 'Russia', 25.0, 50.0),
+    ('Deiveson Figueiredo', 25, 5, 65, 35, 68, 3.70, 52.0, 1.80, 40.0, 0.90, 'Orthodox', 'Brazil', 45.0, 30.0),
 ]
 
-# 2. Fight History Data (Ensuring the standardized names are used here too)
 FIGHT_HISTORY_DATA = [
     # winner, loser, finish_method, fight_date
-    ('Merab Dvalishvili', 'C Sandhagen', 'Decision', '2025-10-04'),
-    ('Petr Yan', 'M McGhee', 'Decision', '2025-07-26'),
-    ('Alexandre Pantoja', 'Kai Kara France', 'Submission', '2022-07-30'),
-    ('Joshua Van', 'Brandon Royval', 'Decision', '2025-06-28'),
-    ('Brandon Moreno', 'S Erceg', 'Decision', '2025-03-29'),
-    ('Tatsuro Taira', 'H Park', 'Submission', '2025-08-2'),
-    ('Henry Cejudo', 'D Cruz', 'KO/TKO', '2020-05-09'),
-    ('Payton Talbott', 'F Lima', 'Decision', '2025-06-28'),
-    # NAME CHANGE: 'Jan Błachowicz' -> 'Jan Blachowicz'
-    ('Jan Blachowicz', 'A Rakic', 'KO/TKO', '2022-05-14'),
-    ('Bogdan Guskov', 'N Krylov', 'KO/TKO', '2025-07-26'),
+    ('Justin Gaethje', 'Paddy Pimblett', 'Decision', '2025-12-15'),
+    ('Kayla Harrison', 'Amanda Nunes', 'Submission', '2025-12-15'),
+    ('Sean O\'Malley', 'Song Yadong', 'KO/TKO', '2025-12-15'),
+    ('Derrick Lewis', 'Waldo Cortes-Acosta', 'KO/TKO', '2025-12-15'),
+    ('Arnold Allen', 'Joanderson Silva', 'Decision', '2025-12-15'),
+    ('Rose Namajunas', 'Natalia Silva', 'Decision', '2025-12-15'),
+    ('Umar Nurmagomedov', 'Deiveson Figueiredo', 'Submission', '2025-12-15'),
 ]
+
 
 
 # --- DATABASE UTILITY FUNCTIONS ---
